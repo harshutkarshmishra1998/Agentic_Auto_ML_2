@@ -7,10 +7,19 @@ from .context import PreprocessContext
 from .dispatcher import run_strategies
 
 
+# -------------------------------------------------
+# CONFIG
+# -------------------------------------------------
+
 MODEL_SELECTION_LOG = Path("data/model_selection.jsonl")
+PREPROCESS_2_LOG = Path("data/preprocess_2.json")
 
 
-def load_last_n_records(n):
+# -------------------------------------------------
+# LOAD MODEL SELECTION RECORDS
+# -------------------------------------------------
+
+def load_last_n_records(n: int):
 
     records = []
 
@@ -21,12 +30,42 @@ def load_last_n_records(n):
     return records[-n:]
 
 
+# -------------------------------------------------
+# APPEND TO GLOBAL LOG
+# -------------------------------------------------
+
+def append_preprocess_log(entry: dict):
+    """
+    Append entry to preprocess_2.json safely.
+    """
+
+    ensure_parent(PREPROCESS_2_LOG)
+
+    if PREPROCESS_2_LOG.exists():
+        with open(PREPROCESS_2_LOG, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    else:
+        data = []
+
+    data.append(entry)
+
+    with open(PREPROCESS_2_LOG, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+
+
+# -------------------------------------------------
+# PROCESS SINGLE RECORD
+# -------------------------------------------------
+
 def process_one(record):
 
     ctx = PreprocessContext(record)
+
     df = pd.read_csv(ctx.dataset_path)
 
     df, strategy_logs = run_strategies(df, ctx)
+
+    # ---------------- save dataset ----------------
 
     final_path = ctx.dataset_path.with_name(
         ctx.dataset_path.stem + "_final.csv"
@@ -35,24 +74,29 @@ def process_one(record):
     ensure_parent(final_path)
     df.to_csv(final_path, index=False)
 
-    log = {
+    # ---------------- build log entry ----------------
+
+    log_entry = {
         "timestamp": now_iso(),
-        "primary_model": ctx.primary_model,
+        "experiment_id": record.get("experiment_id"),
+        "source_preprocessed_file": str(ctx.dataset_path),
         "final_dataset": str(final_path),
+        "primary_model": ctx.primary_model,
         "strategy_logs": strategy_logs,
         "rows": len(df),
         "columns": len(df.columns)
     }
 
-    log_path = final_path.with_suffix(".json")
-    with open(log_path, "w") as f:
-        json.dump(log, f, indent=2)
+    append_preprocess_log(log_entry)
 
     return {
-        "dataset": str(final_path),
-        "log": str(log_path)
+        "final_dataset": str(final_path)
     }
 
+
+# -------------------------------------------------
+# MAIN RUNNER
+# -------------------------------------------------
 
 def run_preprocess_2(last_n: int = 1):
 
