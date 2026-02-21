@@ -18,7 +18,7 @@ def deterministic_role(profile: ColumnProfile):
     if profile.parseable_datetime_ratio > 0.9:
         return Role.DATETIME, 0.95
 
-    if profile.unique_ratio > 0.98 and profile.n_unique > 20:
+    if profile.unique_ratio == 1 and profile.n_unique > 20:
         return Role.IDENTIFIER, 0.9
 
     if profile.is_numeric:
