@@ -13,8 +13,8 @@ from preprocess_2.langgraph_node import preprocess_2_node
 from tests.schema_mapping import extract_schema
 from tests.json_printer import print_last_n_role_constants
 
-METADATA_FILE = "uploaded_files/churn/metadata.json"
-DATA_FILE = "uploaded_files/churn/data.csv"
+METADATA_FILE = "uploaded_files/mildew_8/metadata.json"
+DATA_FILE = "uploaded_files/mildew_8/data.csv"
 
 cats, target = extract_schema(METADATA_FILE, DATA_FILE)
 

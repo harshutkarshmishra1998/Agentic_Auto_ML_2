@@ -1,0 +1,221 @@
+[
+  {
+    "timestamp": "2026-02-21T17:31:37.932857",
+    "experiment_id": "8a3664f5-c1d3-4ae1-875e-cf10653a7e76",
+    "source_preprocessed_file": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_11c644ba.csv",
+    "final_dataset": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_11c644ba_final.csv",
+    "primary_model": "kmeans",
+    "strategy_logs": [
+      {
+        "strategy": "data_sanity",
+        "dropped_columns": [
+          "Unnamed: 28",
+          "accident"
+        ]
+      },
+      {
+        "strategy": "encoding",
+        "onehot_columns": [
+          "belts",
+          "personal_injury",
+          "property_damage",
+          "fatal",
+          "commercial_license",
+          "hazmat",
+          "commercial_vehicle",
+          "alcohol",
+          "work_zone",
+          "vehicletype",
+          "color",
+          "violation_type",
+          "contributed_to_accident",
+          "race",
+          "gender"
+        ],
+        "frequency_columns": [
+          "description",
+          "location",
+          "make",
+          "model",
+          "driver_state",
+          "dl_state"
+        ],
+        "final_columns_added": 21
+      },
+      {
+        "strategy": "scaling",
+        "columns": [
+          "latitude",
+          "longitude",
+          "year"
+        ]
+      },
+      {
+        "strategy": "correlation_resolution",
+        "threshold": 0.95,
+        "dropped_columns": []
+      }
+    ],
+    "rows": 100000,
+    "columns": 92
+  },
+  {
+    "timestamp": "2026-02-21T17:52:10.145078",
+    "experiment_id": "72dbbcbb-9990-4551-b69a-74f432542858",
+    "source_preprocessed_file": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_12f3337e.csv",
+    "final_dataset": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_12f3337e_final.csv",
+    "primary_model": "random_forest",
+    "strategy_logs": [
+      {
+        "strategy": "data_sanity",
+        "dropped_columns": []
+      },
+      {
+        "strategy": "encoding",
+        "onehot_columns": [
+          "area_code",
+          "international_plan",
+          "voice_mail_plan"
+        ],
+        "frequency_columns": [
+          "state"
+        ],
+        "final_columns_added": 4
+      },
+      {
+        "strategy": "scaling",
+        "columns": [
+          "account_length",
+          "number_vmail_messages",
+          "total_day_minutes",
+          "total_day_calls",
+          "total_day_charge",
+          "total_eve_minutes",
+          "total_eve_calls",
+          "total_eve_charge",
+          "total_night_minutes",
+          "total_night_calls",
+          "total_night_charge",
+          "total_intl_minutes",
+          "total_intl_charge"
+        ]
+      },
+      {
+        "strategy": "correlation_resolution",
+        "threshold": 0.95,
+        "dropped_columns": [
+          "total_intl_charge",
+          "total_eve_charge",
+          "total_night_charge",
+          "total_day_minutes"
+        ]
+      }
+    ],
+    "rows": 5000,
+    "columns": 20
+  },
+  {
+    "timestamp": "2026-02-21T17:53:37.843196",
+    "experiment_id": "a4ccee2a-8aef-467c-941d-7b145714538b",
+    "source_preprocessed_file": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_7fb87d7b.csv",
+    "final_dataset": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_7fb87d7b_final.csv",
+    "primary_model": "kmeans",
+    "strategy_logs": [
+      {
+        "strategy": "data_sanity",
+        "dropped_columns": [
+          "Unnamed: 23"
+        ]
+      },
+      {
+        "strategy": "encoding",
+        "onehot_columns": [
+          "trt",
+          "hemo",
+          "homo",
+          "drugs",
+          "oprior",
+          "z30",
+          "race",
+          "gender",
+          "str2",
+          "symptom",
+          "treat",
+          "offtrt",
+          "infected"
+        ],
+        "frequency_columns": [],
+        "final_columns_added": 13
+      },
+      {
+        "strategy": "scaling",
+        "columns": [
+          "time",
+          "age",
+          "wtkg",
+          "preanti",
+          "cd40",
+          "cd420",
+          "cd80",
+          "cd820"
+        ]
+      },
+      {
+        "strategy": "correlation_resolution",
+        "threshold": 0.95,
+        "dropped_columns": []
+      }
+    ],
+    "rows": 50000,
+    "columns": 38
+  },
+  {
+    "timestamp": "2026-02-21T17:54:36.343955",
+    "experiment_id": "04a538e9-aa2b-4040-be8d-d0af7ed891ad",
+    "source_preprocessed_file": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_37427c86.csv",
+    "final_dataset": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_37427c86_final.csv",
+    "primary_model": "random_forest",
+    "strategy_logs": [
+      {
+        "strategy": "data_sanity",
+        "dropped_columns": []
+      },
+      {
+        "strategy": "encoding",
+        "onehot_columns": [
+          "Payment_of_Min_Amount"
+        ],
+        "frequency_columns": [],
+        "final_columns_added": 1
+      },
+      {
+        "strategy": "scaling",
+        "columns": [
+          "Age",
+          "Annual_Income",
+          "Monthly_Inhand_Salary",
+          "Num_Bank_Accounts",
+          "Num_Credit_Card",
+          "Interest_Rate",
+          "Num_of_Loan",
+          "Delay_from_due_date",
+          "Num_of_Delayed_Payment",
+          "Changed_Credit_Limit",
+          "Num_Credit_Inquiries",
+          "Outstanding_Debt",
+          "Credit_History_Age",
+          "Total_EMI_per_month",
+          "Amount_invested_monthly",
+          "Monthly_Balance"
+        ]
+      },
+      {
+        "strategy": "correlation_resolution",
+        "threshold": 0.95,
+        "dropped_columns": []
+      }
+    ],
+    "rows": 50000,
+    "columns": 23
+  }
+]

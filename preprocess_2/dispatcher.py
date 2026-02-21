@@ -26,21 +26,62 @@ STRATEGY_MAP = {
 }
 
 
+# def run_strategies(df, context):
+
+#     logs = []
+
+#     for strategy in PIPELINE_ORDER:
+
+#         if strategy == "data_sanity":
+#             df, log = STRATEGY_MAP[strategy](df)
+
+#         elif strategy == "correlation_resolution":
+#             df, log = STRATEGY_MAP[strategy](df)
+
+#         else:
+#             cols = context.get_columns(strategy)
+#             df, log = STRATEGY_MAP[strategy](df, cols)
+
+#         if log:
+#             logs.append(log)
+
+#     return df, logs
+
 def run_strategies(df, context):
 
     logs = []
 
     for strategy in PIPELINE_ORDER:
 
+        # -------------------------------
+        # data_sanity has no column input
+        # -------------------------------
         if strategy == "data_sanity":
             df, log = STRATEGY_MAP[strategy](df)
 
+        # -------------------------------
+        # correlation has no column input
+        # -------------------------------
         elif strategy == "correlation_resolution":
             df, log = STRATEGY_MAP[strategy](df)
 
+        # -------------------------------
+        # column-based strategies
+        # -------------------------------
         else:
-            cols = context.get_columns(strategy)
-            df, log = STRATEGY_MAP[strategy](df, cols)
+            planned_cols = context.get_columns(strategy)
+
+            # 🔥 CRITICAL FIX
+            existing_cols = [
+                c for c in planned_cols
+                if c in df.columns
+            ]
+
+            # if nothing left → skip safely
+            if not existing_cols:
+                continue
+
+            df, log = STRATEGY_MAP[strategy](df, existing_cols)
 
         if log:
             logs.append(log)
