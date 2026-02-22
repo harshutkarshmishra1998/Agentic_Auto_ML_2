@@ -168,6 +168,8 @@ def log_experiment(
     # full experiment record
     # -----------------------------
     runtime_meta = _runtime_model_metadata(model_name, task, runtime_model)
+    # Backward-compatible alias kept to avoid NameError in partially merged deployments.
+    resolved_model = model_name
 
     record = {
         "experiment_id": experiment_id,
