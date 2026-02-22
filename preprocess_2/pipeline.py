@@ -12,7 +12,7 @@ from .dispatcher import run_strategies
 # -------------------------------------------------
 
 MODEL_SELECTION_LOG = Path("data/model_selection.jsonl")
-PREPROCESS_2_LOG = Path("data/preprocess_2.json")
+PREPROCESS_2_LOG = Path("data/preprocess_2.jsonl")
 
 
 # -------------------------------------------------
@@ -36,21 +36,14 @@ def load_last_n_records(n: int):
 
 def append_preprocess_log(entry: dict):
     """
-    Append entry to preprocess_2.json safely.
+    Append entry to preprocess_2.jsonl safely.
     """
 
     ensure_parent(PREPROCESS_2_LOG)
 
-    if PREPROCESS_2_LOG.exists():
-        with open(PREPROCESS_2_LOG, "r", encoding="utf-8") as f:
-            data = json.load(f)
-    else:
-        data = []
-
-    data.append(entry)
-
-    with open(PREPROCESS_2_LOG, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
+    with open(PREPROCESS_2_LOG, "a", encoding="utf-8") as f:
+        f.write(json.dumps(entry, ensure_ascii=False))
+        f.write("\n")
 
 
 # -------------------------------------------------

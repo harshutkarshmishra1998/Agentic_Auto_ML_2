@@ -39,6 +39,7 @@
 #         ]
 
 import json
+import re
 from pathlib import Path
 
 
@@ -71,7 +72,8 @@ def canonical(name: str | None):
     if not name:
         return None
 
-    n = name.lower().replace("_", "").replace("-", "").strip()
+    n = name.lower().strip()
+    n = re.sub(r"[^a-z0-9]+", "", n)
 
     if n in MODEL_NAME_ALIASES:
         return MODEL_NAME_ALIASES[n]
