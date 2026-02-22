@@ -52,3 +52,19 @@ def test_run_validation_with_datetime_strings_does_not_crash():
     assert "cv_mean" in result
     assert "fold_scores" in result
     assert len(result["fold_scores"]) == 3
+
+
+def test_prepare_features_high_cardinality_column_is_not_one_hot_exploded():
+    n_rows = 1000
+    X = pd.DataFrame(
+        {
+            "session_id": [f"session_{i}" for i in range(n_rows)],
+            "city": ["a", "b"] * (n_rows // 2),
+            "value": list(range(n_rows)),
+        }
+    )
+
+    prepared = _prepare_features(X)
+
+    assert "session_id__encoded" in prepared.columns
+    assert prepared.shape[1] < 20

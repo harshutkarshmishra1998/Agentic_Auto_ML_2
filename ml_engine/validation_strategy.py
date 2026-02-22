@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from pandas.api.types import CategoricalDtype
 from sklearn.model_selection import train_test_split, KFold, StratifiedKFold, LeaveOneOut
 from sklearn.metrics import confusion_matrix, mean_absolute_error, mean_squared_error
 
@@ -33,13 +34,46 @@ def _prepare_features(X):
     """
     Convert all feature columns to model-safe numeric values.
 
-    - Datetime/object/category columns are one-hot encoded.
+    - Low-cardinality categorical columns are one-hot encoded.
+    - High-cardinality categorical columns are ordinal-encoded.
     - Numeric columns are retained as-is.
     """
     if X is None or X.shape[1] == 0:
         raise ValueError("Training requires at least one feature column.")
 
-    X_prepared = pd.get_dummies(X, dummy_na=True)
+    max_categories_for_one_hot = 100
+
+    low_cardinality_cols = []
+    high_cardinality_cols = []
+
+    for col in X.columns:
+        dtype = X[col].dtype
+        is_categorical = (
+            pd.api.types.is_object_dtype(dtype)
+            or isinstance(dtype, CategoricalDtype)
+            or pd.api.types.is_string_dtype(dtype)
+        )
+        if is_categorical:
+            if X[col].nunique(dropna=True) > max_categories_for_one_hot:
+                high_cardinality_cols.append(col)
+            else:
+                low_cardinality_cols.append(col)
+
+    numeric_cols = [
+        col for col in X.columns
+        if col not in low_cardinality_cols and col not in high_cardinality_cols
+    ]
+
+    feature_parts = [X[numeric_cols].copy()]
+
+    for col in high_cardinality_cols:
+        encoded = pd.factorize(X[col], sort=False)[0].astype("int32")
+        feature_parts.append(pd.DataFrame({f"{col}__encoded": encoded}, index=X.index))
+
+    if low_cardinality_cols:
+        feature_parts.append(pd.get_dummies(X[low_cardinality_cols], dummy_na=True))
+
+    X_prepared = pd.concat(feature_parts, axis=1)
 
     if X_prepared.shape[1] == 0:
         raise ValueError("Training requires at least one usable feature column.")
