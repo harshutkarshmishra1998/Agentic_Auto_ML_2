@@ -33,3 +33,8 @@ class AgentState(TypedDict, total=False):
     # -------- ML training --------
     ml_training_last_n: Optional[int]
     ml_training_result: Optional[List[Dict[str, Any]]]
+
+    # -------- evaluation --------
+    evaluation_last_n: Optional[int]
+    evaluation_result: Optional[List[Dict[str, Any]]]
+    evaluation_error: Optional[str]
