@@ -65,6 +65,36 @@ def _artifact_info(model_artifact_path):
     }
 
 
+
+
+def _runtime_model_metadata(model_name: str, task: str, runtime_model=None) -> dict:
+    """Return explicit runtime model metadata without changing canonical model key."""
+    estimator_class = runtime_model.__class__.__name__ if runtime_model is not None else None
+
+    estimator_type = None
+    if estimator_class:
+        lowered = estimator_class.lower()
+        if "regressor" in lowered:
+            estimator_type = "regressor"
+        elif "classifier" in lowered:
+            estimator_type = "classifier"
+
+    if estimator_type is None:
+        if task == "regression":
+            estimator_type = "regressor"
+        elif task == "classification":
+            estimator_type = "classifier"
+
+    model_variant = f"{model_name}_{estimator_type}" if estimator_type else model_name
+
+    return {
+        "model_family": model_name,
+        "model_variant": model_variant,
+        "estimator_type": estimator_type,
+        "estimator_class": estimator_class,
+    }
+
+
 def _write_jsonl(path, record):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "a") as f:
@@ -87,7 +117,8 @@ def log_experiment(
     validation_strategy,
     training_result,
     model_artifact_path=None,
-    training_time_sec=None
+    training_time_sec=None,
+    runtime_model=None
 ):
     """
     Writes evaluator-ready experiment record.
@@ -136,6 +167,10 @@ def log_experiment(
     # -----------------------------
     # full experiment record
     # -----------------------------
+    runtime_meta = _runtime_model_metadata(model_name, task, runtime_model)
+    # Backward-compatible alias kept to avoid NameError in partially merged deployments.
+    resolved_model = model_name
+
     record = {
         "experiment_id": experiment_id,
         "timestamp": datetime.utcnow().isoformat(),
@@ -143,8 +178,9 @@ def log_experiment(
         # -------------------------
         # model identity
         # -------------------------
-        "model": model_name,
+        "model": resolved_model,
         "task": task,
+        "runtime_model": runtime_meta,
 
         # -------------------------
         # dataset reference
@@ -157,7 +193,7 @@ def log_experiment(
         # model initialization (FULL CONTEXT)
         # -------------------------
         "model_initialization": {
-            "model_name": model_name,
+            "model_name": resolved_model,
             "init_params": init_params,
             "initializer_version": "v1"
         },
