@@ -5,3 +5,4 @@ __pycache__/
 .archived
 *.csv
 data/artifacts/
+data
