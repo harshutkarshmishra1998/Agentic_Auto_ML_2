@@ -22,7 +22,7 @@ def save_results(results):
 
     root = _get_project_root()
     data_dir = root / "data"
-    out = data_dir / "model_initializations.jsonl"
+    out = data_dir / "model_initialization.jsonl"
 
     data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -73,15 +73,17 @@ def run_initializer(last_n: int = 1):
         signals = extract_signals(exp)
         params = MODEL_RULES[model](signals)
 
-        results.append({
+        record = {
             "experiment_id": exp["experiment_id"],
             "model": model,
             "init_params": params,
             "signals": signals.__dict__,
             "dataset_path": exp["final_dataset"]
-        })
+        }
 
-        save_path = save_results(results)
+        save_path = save_results([record])
         print(f"Saved to {save_path}")
+
+        results.append(record)
 
     return results
