@@ -10,12 +10,13 @@ from model_selector.langgraph_node import model_selector_node
 # NEW
 from preprocess_2.langgraph_node import preprocess_2_node
 from model_intializer.langgraph_node import model_initializer_node
+from ml_engine.langgraph_node import ml_training_node
 
 from tests.schema_mapping import extract_schema
 from tests.json_printer import print_last_n_role_constants
 
-METADATA_FILE = "uploaded_files/credit_score_classification_downsampled/metadata.json"
-DATA_FILE = "uploaded_files/credit_score_classification_downsampled/data.csv"
+METADATA_FILE = "uploaded_files/churn/metadata.json"
+DATA_FILE = "uploaded_files/churn/data.csv"
 
 cats, target = extract_schema(METADATA_FILE, DATA_FILE)
 
@@ -39,6 +40,7 @@ def build_graph():
     builder.add_node("model_selector", model_selector_node)
     builder.add_node("preprocess_2", preprocess_2_node)
     builder.add_node("model_initializer", model_initializer_node)
+    builder.add_node("ml_training", ml_training_node)
 
 
     builder.set_entry_point("schema_inference")
@@ -47,7 +49,8 @@ def build_graph():
     builder.add_edge("preprocess_1", "model_selector")
     builder.add_edge("model_selector", "preprocess_2")
     builder.add_edge("preprocess_2", "model_initializer")
-    builder.add_edge("model_initializer", END)
+    builder.add_edge("model_initializer", "ml_training")
+    builder.add_edge("ml_training", END)
 
     return builder.compile()
 

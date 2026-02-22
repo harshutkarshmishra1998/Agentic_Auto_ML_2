@@ -29,3 +29,7 @@ class AgentState(TypedDict, total=False):
     # -------- model initializer --------
     model_initializer_last_n: Optional[int]
     model_initialization_result: Optional[List[Dict[str, Any]]]
+
+    # -------- ML training --------
+    ml_training_last_n: Optional[int]
+    ml_training_result: Optional[List[Dict[str, Any]]]
