@@ -115,5 +115,78 @@
     ],
     "rows": 5000,
     "columns": 17
+  },
+  {
+    "timestamp": "2026-02-22T17:07:11.919041",
+    "experiment_id": "96696fa3-c6b5-4543-aaa2-66dd7ff78a39",
+    "source_preprocessed_file": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML_2\\data\\data_preprocessed_1_32351b13.csv",
+    "final_dataset": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML_2\\data\\data_preprocessed_1_32351b13_final.csv",
+    "primary_model": "random_forest",
+    "strategy_logs": [
+      {
+        "strategy": "data_sanity",
+        "dropped_columns": []
+      },
+      {
+        "strategy": "encoding",
+        "onehot_columns": [
+          "rating"
+        ],
+        "frequency_columns": [
+          "comment_text"
+        ],
+        "final_columns_added": 2
+      },
+      {
+        "strategy": "scaling",
+        "scaled_columns": [
+          "severe_toxicity",
+          "obscene",
+          "identity_attack",
+          "insult",
+          "threat",
+          "asian",
+          "atheist",
+          "bisexual",
+          "black",
+          "buddhist",
+          "christian",
+          "female",
+          "heterosexual",
+          "hindu",
+          "homosexual_gay_or_lesbian",
+          "intellectual_or_learning_disability",
+          "jewish",
+          "latino",
+          "male",
+          "muslim",
+          "other_disability",
+          "other_gender",
+          "other_race_or_ethnicity",
+          "other_religion",
+          "other_sexual_orientation",
+          "physical_disability",
+          "psychiatric_or_mental_illness",
+          "transgender",
+          "white",
+          "funny",
+          "likes",
+          "disagree",
+          "sexual_explicit",
+          "toxicity_annotator_count"
+        ],
+        "coerced_to_numeric": [],
+        "skipped_columns": []
+      },
+      {
+        "strategy": "correlation_resolution",
+        "threshold": 0.95,
+        "dropped_columns": [
+          "rating_rejected"
+        ]
+      }
+    ],
+    "rows": 100000,
+    "columns": 41
   }
 ]
