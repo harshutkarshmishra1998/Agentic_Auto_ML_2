@@ -134,7 +134,8 @@ def run_training(last_n=1):
             validation_strategy=output["validation_strategy"],
             training_result=output["result"],
             model_artifact_path=artifact_path,
-            training_time_sec=training_time
+            training_time_sec=training_time,
+            runtime_model=model
         )
 
         results.append({
