@@ -12,6 +12,7 @@ from preprocess_2.langgraph_node import preprocess_2_node
 from model_intializer.langgraph_node import model_initializer_node
 from ml_engine.langgraph_node import ml_training_node
 from evaluation_engine.langgraph_node import evaluation_node
+from retrain.langgraph_node import retrain_node
 
 from tests.schema_mapping import extract_schema
 from tests.json_printer import print_last_n_role_constants
@@ -43,6 +44,7 @@ def build_graph():
     builder.add_node("model_initializer", model_initializer_node)
     builder.add_node("ml_training", ml_training_node)
     builder.add_node("evaluation", evaluation_node)
+    builder.add_node("retrain", retrain_node)
 
 
     builder.set_entry_point("schema_inference")
@@ -53,7 +55,8 @@ def build_graph():
     builder.add_edge("preprocess_2", "model_initializer")
     builder.add_edge("model_initializer", "ml_training")
     builder.add_edge("ml_training", "evaluation")
-    builder.add_edge("evaluation", END)
+    builder.add_edge("evaluation", "retrain")
+    builder.add_edge("retrain", END)
 
     return builder.compile()
 

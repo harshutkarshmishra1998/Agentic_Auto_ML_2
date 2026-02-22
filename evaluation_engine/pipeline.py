@@ -99,9 +99,11 @@ def run_evaluation_pipeline(last_n: int):
 
         llm_decision = analyze_retraining_need({
             "model": model,
+            "task": exp.get("task"),
             "metrics": derived,
             "training_time": training_time,
-            "validation_gap": gap
+            "validation_gap": gap,
+            "validation_strategy": exp.get("validation_strategy", {}),
         })
 
         record = {
