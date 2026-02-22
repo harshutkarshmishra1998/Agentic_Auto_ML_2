@@ -9,9 +9,14 @@ def _get_strategy(exp, name):
 
 
 def extract_signals(exp):
-
-    rows = exp["rows"]
-    cols = exp["columns"]
+    rows = _resolve_positive_int(
+        exp,
+        keys=("rows", "row_count", "n_rows")
+    )
+    cols = _resolve_positive_int(
+        exp,
+        keys=("columns", "cols", "n_columns")
+    )
 
     encoding = _get_strategy(exp, "encoding")
     scaling = _get_strategy(exp, "scaling")
@@ -41,3 +46,24 @@ def extract_signals(exp):
         label_encoded_count=len(label),
         clustering_ready=clustering_ready
     )
+
+
+def _resolve_positive_int(exp, keys):
+    for key in keys:
+        value = exp.get(key)
+
+        if isinstance(value, bool):
+            continue
+
+        if isinstance(value, int):
+            return max(value, 0)
+
+        if isinstance(value, float):
+            return max(int(value), 0)
+
+        if isinstance(value, str):
+            stripped = value.strip()
+            if stripped.isdigit():
+                return int(stripped)
+
+    return 0
