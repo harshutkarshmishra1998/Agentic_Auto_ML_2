@@ -31,29 +31,19 @@ def _append_jsonl(path: Path, record: Dict[str, Any]) -> None:
 
 
 def _append_preprocess_2_seed_entry(experiment_id: str, dataset_path: str, primary_model: str) -> None:
-    path = _get_project_root() / "data" / "preprocess_2.json"
+    path = _get_project_root() / "data" / "preprocess_2.jsonl"
 
-    if path.exists():
-        with open(path, "r", encoding="utf-8") as f:
-            payload = json.load(f)
-    else:
-        payload = []
+    record = {
+        "experiment_id": experiment_id,
+        "final_dataset": dataset_path,
+        "primary_model": primary_model,
+        "strategy_logs": [],
+        "rows": None,
+        "columns": None,
+        "trigger": "retrain_loop",
+    }
 
-    payload.append(
-        {
-            "experiment_id": experiment_id,
-            "final_dataset": dataset_path,
-            "primary_model": primary_model,
-            "strategy_logs": [],
-            "rows": None,
-            "columns": None,
-            "trigger": "retrain_loop",
-        }
-    )
-
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(payload, f, indent=2)
+    _append_jsonl(path, record)
 
 
 def _resolve_best_model(experiment_id: str) -> Optional[str]:
