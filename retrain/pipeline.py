@@ -52,8 +52,9 @@ def _append_preprocess_2_seed_entry(experiment_id: str, dataset_path: str, prima
     )
 
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(payload, f, indent=2)
+    with open(path, "a", encoding="utf-8") as f:
+        json.dump(payload, f)
+        f.write("\n")
 
 
 def _resolve_best_model(experiment_id: str) -> Optional[str]:

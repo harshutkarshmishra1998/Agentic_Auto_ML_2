@@ -1,0 +1,25 @@
+{
+  "dataset_id":47029,
+  "name":"fitness_claim_dataset",
+  "target":null,
+  "n_rows":50000,
+  "n_features":16,
+  "categorical_features":[
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ]
+}

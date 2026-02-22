@@ -17,8 +17,8 @@ from retrain.langgraph_node import retrain_node
 from tests.schema_mapping import extract_schema
 from tests.json_printer import print_last_n_role_constants
 
-METADATA_FILE = "uploaded_files/jigsaw_unintended_bias100k/metadata.json"
-DATA_FILE = "uploaded_files/jigsaw_unintended_bias100k/data.csv"
+METADATA_FILE = "uploaded_files/dataset_credit_score/metadata.json"
+DATA_FILE = "uploaded_files/dataset_credit_score/data.csv"
 
 cats, target = extract_schema(METADATA_FILE, DATA_FILE)
 
