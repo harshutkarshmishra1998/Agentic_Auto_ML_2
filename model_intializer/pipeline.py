@@ -121,7 +121,8 @@ def run_initializer(last_n: int = 1):
             "model": model,
             "init_params": params,
             "signals": signals.__dict__,
-            "dataset_path": exp["final_dataset"]
+            "dataset_path": exp["final_dataset"],
+            "task": exp.get("problem_type")
         }
 
         save_path = save_results([record])
