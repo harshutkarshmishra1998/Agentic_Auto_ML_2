@@ -20,7 +20,10 @@ def compute_classification(cm):
 
 
 def derive_metrics(training_result):
-    if "classification" in training_result:
+    if not isinstance(training_result, dict):
+        return {}
+
+    if "classification" in training_result and isinstance(training_result.get("classification"), dict):
         block = training_result["classification"]
         cm = block.get("confusion_matrix")
         if cm is not None:

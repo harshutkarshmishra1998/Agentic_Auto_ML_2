@@ -4,7 +4,7 @@ import uuid
 
 def get_first_existing(d: dict, keys: list, default=None):
     for k in keys:
-        if k in d:
+        if k in d and d[k] is not None:
             return d[k]
     return default
 
