@@ -20,6 +20,7 @@ def analyze_retraining_need(context: dict) -> dict:
     # -----------------------------
     if task in {"clustering", "unsupervised"}:
         return {
+            "validation_gap": val_gap,
             "should_retrain": False,
             "confidence": 0.85,
             "reasons": [
@@ -36,6 +37,7 @@ def analyze_retraining_need(context: dict) -> dict:
     # -----------------------------
     if val_gap is None:
         return {
+            "validation_gap": val_gap,
             "should_retrain": False,
             "confidence": 0.3,
             "reasons": ["validation metrics unavailable"],
@@ -50,6 +52,7 @@ def analyze_retraining_need(context: dict) -> dict:
     # -----------------------------
     if val_gap > 0.1:
         return {
+            "validation_gap": val_gap,
             "should_retrain": True,
             "confidence": 0.7,
             "reasons": ["validation performance significantly worse than training"],
@@ -60,6 +63,7 @@ def analyze_retraining_need(context: dict) -> dict:
     # Case 3 — stable performance
     # -----------------------------
     return {
+        "validation_gap": val_gap,
         "should_retrain": False,
         "confidence": 0.6,
         "reasons": ["training and validation performance aligned"],
