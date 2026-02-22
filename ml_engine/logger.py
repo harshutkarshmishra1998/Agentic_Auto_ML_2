@@ -65,6 +65,23 @@ def _artifact_info(model_artifact_path):
     }
 
 
+
+
+def _resolved_model_label(model_name: str, task: str, runtime_model=None) -> str:
+    """Return a task-specific model label for clearer experiment logs."""
+    if runtime_model is not None:
+        cls = runtime_model.__class__.__name__.lower()
+        if "regressor" in cls:
+            return f"{model_name}_regressor"
+        if "classifier" in cls:
+            return f"{model_name}_classifier"
+
+    if task == "regression":
+        return f"{model_name}_regressor"
+    if task == "classification":
+        return f"{model_name}_classifier"
+    return model_name
+
 def _write_jsonl(path, record):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "a") as f:
@@ -87,7 +104,8 @@ def log_experiment(
     validation_strategy,
     training_result,
     model_artifact_path=None,
-    training_time_sec=None
+    training_time_sec=None,
+    runtime_model=None
 ):
     """
     Writes evaluator-ready experiment record.
@@ -136,6 +154,8 @@ def log_experiment(
     # -----------------------------
     # full experiment record
     # -----------------------------
+    resolved_model = _resolved_model_label(model_name, task, runtime_model)
+
     record = {
         "experiment_id": experiment_id,
         "timestamp": datetime.utcnow().isoformat(),
@@ -143,7 +163,7 @@ def log_experiment(
         # -------------------------
         # model identity
         # -------------------------
-        "model": model_name,
+        "model": resolved_model,
         "task": task,
 
         # -------------------------
@@ -157,7 +177,7 @@ def log_experiment(
         # model initialization (FULL CONTEXT)
         # -------------------------
         "model_initialization": {
-            "model_name": model_name,
+            "model_name": resolved_model,
             "init_params": init_params,
             "initializer_version": "v1"
         },
