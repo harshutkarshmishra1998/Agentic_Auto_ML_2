@@ -38,3 +38,7 @@ class AgentState(TypedDict, total=False):
     evaluation_last_n: Optional[int]
     evaluation_result: Optional[List[Dict[str, Any]]]
     evaluation_error: Optional[str]
+
+    # -------- retraining --------
+    retrain_max_rounds: Optional[int]
+    retrain_result: Optional[Dict[str, Any]]

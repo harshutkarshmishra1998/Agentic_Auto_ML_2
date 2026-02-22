@@ -14,7 +14,7 @@ def _get_project_root():
 
 
 def _load_initializations():
-    path = _get_project_root() / "data" / "model_initializations.jsonl"
+    path = _get_project_root() / "data" / "model_initialization.jsonl"
     with open(path) as f:
         return [json.loads(line) for line in f]
 
