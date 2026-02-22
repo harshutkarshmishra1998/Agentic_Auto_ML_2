@@ -3,6 +3,4 @@
 .vscode
 __pycache__/
 .archived
-*.csv
-data/artifacts/
-data
+data/
