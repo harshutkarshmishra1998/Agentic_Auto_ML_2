@@ -2,6 +2,10 @@ import pandas as pd
 import numpy as np
 from scipy.stats import skew
 
+
+def _is_non_boolean_numeric(series):
+    return pd.api.types.is_numeric_dtype(series) and not pd.api.types.is_bool_dtype(series)
+
 def is_constant(series):
     """
     True if column has zero variance (only one unique value).
@@ -59,7 +63,7 @@ def missing_pattern(series, df):
 # distribution
 # ----------------------------
 def distribution_shape(series):
-    if not pd.api.types.is_numeric_dtype(series):
+    if not _is_non_boolean_numeric(series):
         return "N/A"
     s = series.dropna()
     if len(s) < 5:
@@ -68,7 +72,7 @@ def distribution_shape(series):
 
 
 def outliers_present(series):
-    if not pd.api.types.is_numeric_dtype(series):
+    if not _is_non_boolean_numeric(series):
         return False
     s = series.dropna()
     if len(s) < 5:
@@ -176,7 +180,7 @@ def correlation_strength(col, df):
 # transform hint
 # ----------------------------
 def transform_hint(series):
-    if not pd.api.types.is_numeric_dtype(series):
+    if not _is_non_boolean_numeric(series):
         return None
     s = series.dropna()
     if len(s) < 5:
