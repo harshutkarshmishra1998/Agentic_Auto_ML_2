@@ -176,7 +176,7 @@ def log_experiment(
         # -------------------------
         # model identity
         # -------------------------
-        "model": model_name,
+        "model": resolved_model,
         "task": task,
         "runtime_model": runtime_meta,
 
@@ -191,7 +191,7 @@ def log_experiment(
         # model initialization (FULL CONTEXT)
         # -------------------------
         "model_initialization": {
-            "model_name": model_name,
+            "model_name": resolved_model,
             "init_params": init_params,
             "initializer_version": "v1"
         },
