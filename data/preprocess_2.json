@@ -359,5 +359,253 @@
     ],
     "rows": 5000,
     "columns": 142
+  },
+  {
+    "timestamp": "2026-02-22T09:49:11.231327",
+    "experiment_id": "899bee1b-4321-4edb-b171-62f61b1af117",
+    "source_preprocessed_file": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_af0c95b7.csv",
+    "final_dataset": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_af0c95b7_final.csv",
+    "primary_model": "kmeans",
+    "strategy_logs": [
+      {
+        "strategy": "data_sanity",
+        "dropped_columns": [
+          "Unnamed: 35"
+        ]
+      },
+      {
+        "strategy": "encoding",
+        "onehot_columns": [
+          "mikro_2",
+          "lai_1",
+          "meldug_2",
+          "straaling_1",
+          "nedboer_2",
+          "mikro_3",
+          "lai_3",
+          "meldug_1",
+          "meldug_4",
+          "middel_2",
+          "middel_1",
+          "temp_4",
+          "temp_1",
+          "straaling_4",
+          "temp_3",
+          "lai_4",
+          "straaling_3",
+          "middel_3",
+          "meldug_3",
+          "straaling_2",
+          "nedboer_1",
+          "lai_2",
+          "nedboer_3",
+          "lai_0",
+          "mikro_1",
+          "temp_2"
+        ],
+        "frequency_columns": [
+          "udbytte"
+        ],
+        "final_columns_added": 27
+      },
+      {
+        "strategy": "scaling",
+        "skipped_columns": [
+          "foto_2",
+          "foto_3",
+          "foto_4",
+          "dm_3",
+          "dm_1",
+          "foto_1",
+          "dm_4",
+          "dm_2"
+        ],
+        "reason": "no_numeric_columns"
+      },
+      {
+        "strategy": "correlation_resolution",
+        "threshold": 0.95,
+        "dropped_columns": []
+      }
+    ],
+    "rows": 5000,
+    "columns": 142
+  },
+  {
+    "timestamp": "2026-02-22T09:50:17.851244",
+    "experiment_id": "79f1a842-46eb-46d2-ad6e-bf0b89905517",
+    "source_preprocessed_file": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_396224a3.csv",
+    "final_dataset": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_396224a3_final.csv",
+    "primary_model": "random_forest",
+    "strategy_logs": [
+      {
+        "strategy": "data_sanity",
+        "dropped_columns": []
+      },
+      {
+        "strategy": "encoding",
+        "onehot_columns": [
+          "area_code",
+          "international_plan",
+          "voice_mail_plan"
+        ],
+        "frequency_columns": [
+          "state"
+        ],
+        "final_columns_added": 4
+      },
+      {
+        "strategy": "scaling",
+        "scaled_columns": [
+          "account_length",
+          "number_vmail_messages",
+          "total_day_minutes",
+          "total_day_calls",
+          "total_day_charge",
+          "total_eve_minutes",
+          "total_eve_calls",
+          "total_eve_charge",
+          "total_night_minutes",
+          "total_night_calls",
+          "total_night_charge",
+          "total_intl_minutes",
+          "total_intl_charge"
+        ],
+        "coerced_to_numeric": [],
+        "skipped_columns": []
+      },
+      {
+        "strategy": "correlation_resolution",
+        "threshold": 0.95,
+        "dropped_columns": [
+          "total_day_minutes",
+          "voice_mail_plan_0.6931471805599453",
+          "international_plan_0.6931471805599453",
+          "total_night_charge",
+          "voice_mail_plan_0.0",
+          "total_intl_charge",
+          "total_eve_charge"
+        ]
+      }
+    ],
+    "rows": 5000,
+    "columns": 17
+  },
+  {
+    "timestamp": "2026-02-22T09:52:28.073758",
+    "experiment_id": "e84fe718-1323-44d5-9530-cc0215473821",
+    "source_preprocessed_file": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_05fc0816.csv",
+    "final_dataset": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_05fc0816_final.csv",
+    "primary_model": "random_forest",
+    "strategy_logs": [
+      {
+        "strategy": "data_sanity",
+        "dropped_columns": []
+      },
+      {
+        "strategy": "encoding",
+        "onehot_columns": [
+          "area_code",
+          "international_plan",
+          "voice_mail_plan"
+        ],
+        "frequency_columns": [
+          "state"
+        ],
+        "final_columns_added": 4
+      },
+      {
+        "strategy": "scaling",
+        "scaled_columns": [
+          "account_length",
+          "number_vmail_messages",
+          "total_day_minutes",
+          "total_day_calls",
+          "total_day_charge",
+          "total_eve_minutes",
+          "total_eve_calls",
+          "total_eve_charge",
+          "total_night_minutes",
+          "total_night_calls",
+          "total_night_charge",
+          "total_intl_minutes",
+          "total_intl_charge"
+        ],
+        "coerced_to_numeric": [],
+        "skipped_columns": []
+      },
+      {
+        "strategy": "correlation_resolution",
+        "threshold": 0.95,
+        "dropped_columns": [
+          "total_night_charge",
+          "voice_mail_plan_0.6931471805599453",
+          "voice_mail_plan_0.0",
+          "international_plan_0.6931471805599453",
+          "total_intl_charge",
+          "total_eve_charge",
+          "total_day_minutes"
+        ]
+      }
+    ],
+    "rows": 5000,
+    "columns": 17
+  },
+  {
+    "timestamp": "2026-02-22T09:58:04.607539",
+    "experiment_id": "0a6dfade-6b84-4dce-a318-dfd632f8e730",
+    "source_preprocessed_file": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_80ea076d.csv",
+    "final_dataset": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_80ea076d_final.csv",
+    "primary_model": "random_forest",
+    "strategy_logs": [
+      {
+        "strategy": "data_sanity",
+        "dropped_columns": []
+      },
+      {
+        "strategy": "encoding",
+        "onehot_columns": [
+          "Month",
+          "Occupation",
+          "Credit_Mix",
+          "Payment_of_Min_Amount",
+          "Payment_Behaviour"
+        ],
+        "frequency_columns": [
+          "Type_of_Loan",
+          "Credit_History_Age"
+        ],
+        "final_columns_added": 7
+      },
+      {
+        "strategy": "scaling",
+        "scaled_columns": [
+          "Age",
+          "Annual_Income",
+          "Monthly_Inhand_Salary",
+          "Num_Bank_Accounts",
+          "Num_Credit_Card",
+          "Interest_Rate",
+          "Num_of_Loan",
+          "Delay_from_due_date",
+          "Num_of_Delayed_Payment",
+          "Changed_Credit_Limit",
+          "Num_Credit_Inquiries",
+          "Outstanding_Debt",
+          "Total_EMI_per_month",
+          "Amount_invested_monthly",
+          "Monthly_Balance"
+        ],
+        "coerced_to_numeric": [],
+        "skipped_columns": []
+      },
+      {
+        "strategy": "correlation_resolution",
+        "threshold": 0.95,
+        "dropped_columns": []
+      }
+    ],
+    "rows": 50000,
+    "columns": 56
   }
 ]

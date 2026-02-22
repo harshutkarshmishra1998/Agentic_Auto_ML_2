@@ -25,3 +25,7 @@ class AgentState(TypedDict, total=False):
 
     preprocess_2_last_n: Optional[int]
     preprocess_2_result: Optional[List[Dict[str, Any]]]
+
+    # -------- model initializer --------
+    model_initializer_last_n: Optional[int]
+    model_initialization_result: Optional[List[Dict[str, Any]]]

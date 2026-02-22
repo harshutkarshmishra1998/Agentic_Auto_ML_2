@@ -8,13 +8,28 @@ from .rules_engine import MODEL_RULES
 def _get_project_root():
     return Path(__file__).resolve().parents[1]
 
+# def save_results(results):
+
+#     root = _get_project_root()
+#     out = root / "data" / "model_initializations.json"
+
+#     with open(out, "w") as f:
+#         json.dump(results, f, indent=2)
+
+#     return out
+
 def save_results(results):
 
     root = _get_project_root()
-    out = root / "data" / "model_initializations.json"
+    data_dir = root / "data"
+    out = data_dir / "model_initializations.jsonl"
 
-    with open(out, "w") as f:
-        json.dump(results, f, indent=2)
+    data_dir.mkdir(parents=True, exist_ok=True)
+
+    with open(out, "a") as f:   # ← append mode
+        for r in results:
+            f.write(json.dumps(r))
+            f.write("\n")
 
     return out
 

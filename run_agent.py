@@ -9,20 +9,21 @@ from model_selector.langgraph_node import model_selector_node
 
 # NEW
 from preprocess_2.langgraph_node import preprocess_2_node
+from model_intializer.langgraph_node import model_initializer_node
 
 from tests.schema_mapping import extract_schema
 from tests.json_printer import print_last_n_role_constants
 
-METADATA_FILE = "uploaded_files/mildew_8/metadata.json"
-DATA_FILE = "uploaded_files/mildew_8/data.csv"
+METADATA_FILE = "uploaded_files/credit_score_classification_downsampled/metadata.json"
+DATA_FILE = "uploaded_files/credit_score_classification_downsampled/data.csv"
 
 cats, target = extract_schema(METADATA_FILE, DATA_FILE)
 
-print("CATEGORICAL_COLUMNS = ", cats)
-if target:
-    print(f'TARGET_COLUMN = "{target}"')
-else:
-    print("TARGET_COLUMN = null")
+# print("CATEGORICAL_COLUMNS = ", cats)
+# if target:
+#     print(f'TARGET_COLUMN = "{target}"')
+# else:
+#     print("TARGET_COLUMN = null")
 
 
 # --------------------------------------------------
@@ -37,13 +38,16 @@ def build_graph():
     builder.add_node("preprocess_1", preprocess_1_node)
     builder.add_node("model_selector", model_selector_node)
     builder.add_node("preprocess_2", preprocess_2_node)
+    builder.add_node("model_initializer", model_initializer_node)
+
 
     builder.set_entry_point("schema_inference")
     builder.add_edge("schema_inference", "data_understanding")
     builder.add_edge("data_understanding", "preprocess_1")
     builder.add_edge("preprocess_1", "model_selector")
     builder.add_edge("model_selector", "preprocess_2")
-    builder.add_edge("preprocess_2", END)
+    builder.add_edge("preprocess_2", "model_initializer")
+    builder.add_edge("model_initializer", END)
 
     return builder.compile()
 
@@ -67,5 +71,5 @@ if __name__ == "__main__":
     print("\n=== FINAL STATE ===\n")
     print(result)
 
-    print("\n=== LAST CLASSIFICATION ===\n")
-    print_last_n_role_constants("data/data_classification.jsonl", n=1)
+    # print("\n=== LAST CLASSIFICATION ===\n")
+    # print_last_n_role_constants("data/data_classification.jsonl", n=1)
