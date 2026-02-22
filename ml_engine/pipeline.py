@@ -2,6 +2,9 @@ import json
 import time
 from pathlib import Path
 
+import pandas as pd
+from pandas.api.types import is_numeric_dtype
+
 from ml_engine.template_registry import TEMPLATE_REGISTRY
 from ml_engine.data_loader import load_dataset
 from ml_engine.logger import log_experiment
@@ -19,8 +22,54 @@ def _load_initializations():
         return [json.loads(line) for line in f]
 
 
-def _infer_task(target):
-    return "clustering" if target is None else "classification"
+def _normalize_task(task):
+    if not task:
+        return None
+
+    t = str(task).strip().lower()
+    aliases = {
+        "classification": "classification",
+        "binary_classification": "classification",
+        "multiclass_classification": "classification",
+        "regression": "regression",
+        "unsupervised": "clustering",
+        "clustering": "clustering",
+    }
+    return aliases.get(t)
+
+
+def _infer_task(target_column, y):
+    """
+    Infer task from target availability and target distribution.
+
+    Why this exists:
+    - Upstream metadata can occasionally drift.
+    - Integer-valued regression targets (e.g., count/hour labels) are often misread as multiclass.
+    """
+    if target_column is None or y is None:
+        return "clustering"
+
+    if not isinstance(y, pd.Series):
+        y = pd.Series(y)
+
+    y_non_null = y.dropna()
+    if y_non_null.empty:
+        return "classification"
+
+    if is_numeric_dtype(y_non_null):
+        n = len(y_non_null)
+        unique_count = int(y_non_null.nunique())
+        unique_ratio = unique_count / max(n, 1)
+
+        # Heuristic for numeric targets:
+        # - very low cardinality numeric labels are usually classes (0/1 etc.)
+        # - many distinct numeric values (or sparse repeated counts at scale) are regression.
+        if unique_count <= 10:
+            return "classification"
+        if unique_count > 50 or unique_ratio < 0.05:
+            return "regression"
+
+    return "classification"
 
 
 def run_training(last_n=1):
@@ -40,7 +89,14 @@ def run_training(last_n=1):
         Template = TEMPLATE_REGISTRY[model_name]
 
         X, y = load_dataset(dataset_path, target_column)
-        task = _infer_task(target_column)
+
+        task_from_upstream = _normalize_task(init_record.get("task"))
+        inferred_task = _infer_task(target_column, y)
+
+        # Trust explicit upstream task unless it is clearly incompatible with available target.
+        task = task_from_upstream or inferred_task
+        if target_column is None:
+            task = "clustering"
 
         template = Template({
             "init": init_params,

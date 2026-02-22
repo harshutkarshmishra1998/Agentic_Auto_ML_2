@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from pandas.api.types import CategoricalDtype
 from sklearn.model_selection import train_test_split, KFold, StratifiedKFold, LeaveOneOut
+from sklearn.utils.multiclass import type_of_target
 from sklearn.metrics import confusion_matrix, mean_absolute_error, mean_squared_error
 
 
@@ -11,6 +12,21 @@ def detect_imbalance(y):
     _, counts = np.unique(y, return_counts=True)
     return counts.min() / counts.max() < 0.2
 
+
+
+
+def _can_use_stratified_kfold(y, n_splits):
+    """Return True only when y is a valid classification target for stratification."""
+    if y is None:
+        return False
+
+    y_type = type_of_target(y)
+    if y_type not in {"binary", "multiclass"}:
+        return False
+
+    _, counts = np.unique(y, return_counts=True)
+    # StratifiedKFold requires at least n_splits members in every class.
+    return counts.min() >= n_splits
 
 def choose_strategy(X, y, task):
 
@@ -23,7 +39,7 @@ def choose_strategy(X, y, task):
         return {"type": "loo"}
 
     if n < 2000:
-        if task == "classification" and detect_imbalance(y):
+        if task == "classification" and detect_imbalance(y) and _can_use_stratified_kfold(y, 5):
             return {"type": "stratified_kfold", "n_splits": 5}
         return {"type": "kfold", "n_splits": 5}
 
@@ -142,8 +158,11 @@ def run_validation(model, X, y, strategy, metric_fn, task):
         splitter = LeaveOneOut()
     elif strategy["type"] == "kfold":
         splitter = KFold(strategy["n_splits"], shuffle=True, random_state=42)
-    else:
+    elif strategy["type"] == "stratified_kfold" and _can_use_stratified_kfold(y, strategy["n_splits"]):
         splitter = StratifiedKFold(strategy["n_splits"], shuffle=True, random_state=42)
+    else:
+        # Safe fallback prevents crashes when target/task metadata is inconsistent.
+        splitter = KFold(strategy.get("n_splits", 5), shuffle=True, random_state=42)
 
     scores = []
 
