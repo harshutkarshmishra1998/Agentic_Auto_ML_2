@@ -1,0 +1,1 @@
+{"dataset_id":70001,"name":"absenteeism","target":"Absenteeism Time in Hours","n_rows":700,"n_features":11,"categorical_features":[true,true,false,false,false,false,false,false,true,true,true]}
