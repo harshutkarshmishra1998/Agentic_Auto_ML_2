@@ -217,5 +217,147 @@
     ],
     "rows": 50000,
     "columns": 23
+  },
+  {
+    "timestamp": "2026-02-22T08:54:20.455328",
+    "experiment_id": "bd8e0b56-1b14-48c0-a68f-7ac03481f87d",
+    "source_preprocessed_file": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_a6a96f9e.csv",
+    "final_dataset": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_a6a96f9e_final.csv",
+    "primary_model": "kmeans",
+    "strategy_logs": [
+      {
+        "strategy": "data_sanity",
+        "dropped_columns": [
+          "Unnamed: 35"
+        ]
+      },
+      {
+        "strategy": "encoding",
+        "onehot_columns": [
+          "mikro_2",
+          "lai_1",
+          "meldug_2",
+          "straaling_1",
+          "nedboer_2",
+          "mikro_3",
+          "lai_3",
+          "meldug_1",
+          "meldug_4",
+          "middel_2",
+          "middel_1",
+          "temp_4",
+          "temp_1",
+          "straaling_4",
+          "temp_3",
+          "lai_4",
+          "straaling_3",
+          "middel_3",
+          "meldug_3",
+          "straaling_2",
+          "nedboer_1",
+          "lai_2",
+          "nedboer_3",
+          "lai_0",
+          "mikro_1",
+          "temp_2"
+        ],
+        "frequency_columns": [
+          "udbytte"
+        ],
+        "final_columns_added": 27
+      },
+      {
+        "strategy": "scaling",
+        "skipped_columns": [
+          "foto_2",
+          "foto_3",
+          "foto_4",
+          "dm_3",
+          "dm_1",
+          "foto_1",
+          "dm_4",
+          "dm_2"
+        ],
+        "reason": "no_numeric_columns"
+      },
+      {
+        "strategy": "correlation_resolution",
+        "threshold": 0.95,
+        "dropped_columns": []
+      }
+    ],
+    "rows": 5000,
+    "columns": 142
+  },
+  {
+    "timestamp": "2026-02-22T09:07:47.458278",
+    "experiment_id": "6ca85f22-f5c8-475b-ba66-9f94969e5c71",
+    "source_preprocessed_file": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_631e238c.csv",
+    "final_dataset": "C:\\Users\\Utkarsh Mishra\\Downloads\\Main Projects\\Agentic_Auto_ML\\data\\data_preprocessed_1_631e238c_final.csv",
+    "primary_model": "kmeans",
+    "strategy_logs": [
+      {
+        "strategy": "data_sanity",
+        "dropped_columns": [
+          "Unnamed: 35"
+        ]
+      },
+      {
+        "strategy": "encoding",
+        "onehot_columns": [
+          "mikro_2",
+          "lai_1",
+          "meldug_2",
+          "straaling_1",
+          "nedboer_2",
+          "mikro_3",
+          "lai_3",
+          "meldug_1",
+          "meldug_4",
+          "middel_2",
+          "middel_1",
+          "temp_4",
+          "temp_1",
+          "straaling_4",
+          "temp_3",
+          "lai_4",
+          "straaling_3",
+          "middel_3",
+          "meldug_3",
+          "straaling_2",
+          "nedboer_1",
+          "lai_2",
+          "nedboer_3",
+          "lai_0",
+          "mikro_1",
+          "temp_2"
+        ],
+        "frequency_columns": [
+          "udbytte"
+        ],
+        "final_columns_added": 27
+      },
+      {
+        "strategy": "scaling",
+        "skipped_columns": [
+          "foto_2",
+          "foto_3",
+          "foto_4",
+          "dm_3",
+          "dm_1",
+          "foto_1",
+          "dm_4",
+          "dm_2"
+        ],
+        "reason": "no_numeric_columns"
+      },
+      {
+        "strategy": "correlation_resolution",
+        "threshold": 0.95,
+        "dropped_columns": []
+      }
+    ],
+    "rows": 5000,
+    "columns": 142
   }
 ]

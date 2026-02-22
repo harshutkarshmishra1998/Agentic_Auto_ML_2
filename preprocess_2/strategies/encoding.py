@@ -84,6 +84,14 @@ def apply(df, columns):
             index=df.index
         )
 
+        # encoded_df = encoded_df.sparse.to_dense().astype("int8")
+        encoded_df = (
+            encoded_df
+            .sparse.to_dense()
+            .fillna(0)
+            .astype("int8")
+        )
+
         df.drop(columns=onehot_cols, inplace=True)
         df = pd.concat([df, encoded_df], axis=1)
 
