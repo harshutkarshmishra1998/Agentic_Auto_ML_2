@@ -8,9 +8,28 @@ def analyze_retraining_need(context: dict) -> dict:
         metrics
         training_time
         validation_gap (can be None)
+        validation_strategy
     """
 
+    task = (context.get("task") or "").lower()
+    strategy = (context.get("validation_strategy") or {}).get("type")
     val_gap = context.get("validation_gap")
+
+    # -----------------------------
+    # Unsupervised tasks: no train/val gap expected
+    # -----------------------------
+    if task in {"clustering", "unsupervised"}:
+        return {
+            "should_retrain": False,
+            "confidence": 0.85,
+            "reasons": [
+                "unsupervised task does not use train-validation generalization gap"
+            ],
+            "llm_summary": (
+                "Validation gap is not applicable for clustering runs "
+                f"(strategy={strategy or 'fit_all'})."
+            )
+        }
 
     # -----------------------------
     # Case 1 — no validation info
@@ -19,10 +38,10 @@ def analyze_retraining_need(context: dict) -> dict:
         return {
             "should_retrain": False,
             "confidence": 0.3,
-            "reasons": ["validation gap unavailable"],
+            "reasons": ["validation metrics unavailable"],
             "llm_summary": (
-                "Cannot assess overfitting because validation performance "
-                "is not available. Monitoring recommended."
+                "Cannot assess overfitting because train/validation scores "
+                "are unavailable. Monitoring recommended."
             )
         }
 
