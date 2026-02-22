@@ -112,13 +112,15 @@ Features:
 #     dataset_dir.mkdir(parents=True, exist_ok=True)
 
 #     data_path = dataset_dir / "data.csv"
-#     meta_path = dataset_dir / "metadata.json"
+#     meta_path = dataset_dir / "metadata.jsonl"
 
 #     df = X.copy()
 #     df[metadata["target"]] = y
 #     df.to_csv(data_path, index=False)
 
-#     pd.Series(metadata).to_json(meta_path, indent=2)
+#     with open(meta_path, "a", encoding="utf-8") as f:
+# f.write(json.dumps(metadata, ensure_ascii=False))
+# f.write("\n")
 
 #     print(f"Saved dataset → {dataset_dir}")
 
@@ -164,6 +166,7 @@ Features:
 # if __name__ == "__main__":
 
 #     import argparse
+import json
 
 #     parser = argparse.ArgumentParser(description="OpenML Dataset Downloader")
 #     parser.add_argument(
@@ -195,6 +198,7 @@ from pathlib import Path
 import openml
 import pandas as pd
 import argparse
+import json
 
 
 # -----------------------------------------------------
@@ -287,13 +291,15 @@ def save_dataset(X: pd.DataFrame, y: pd.Series, metadata: dict) -> Path:
     dataset_dir.mkdir(parents=True, exist_ok=True)
 
     data_path = dataset_dir / "data.csv"
-    meta_path = dataset_dir / "metadata.json"
+    meta_path = dataset_dir / "metadata.jsonl"
 
     df = X.copy()
     df[metadata["target"]] = y
 
     df.to_csv(data_path, index=False)
-    pd.Series(metadata).to_json(meta_path, indent=2)
+    with open(meta_path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(metadata, ensure_ascii=False))
+        f.write("\n")
 
     print(f"Saved dataset → {dataset_dir}")
     return dataset_dir
