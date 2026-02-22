@@ -75,6 +75,7 @@ def process_one(record):
         "source_preprocessed_file": str(ctx.dataset_path),
         "final_dataset": str(final_path),
         "primary_model": ctx.primary_model,
+        "problem_type": record.get("problem_definition", {}).get("canonical_type"),
         "strategy_logs": strategy_logs,
         "rows": len(df),
         "columns": len(df.columns)
