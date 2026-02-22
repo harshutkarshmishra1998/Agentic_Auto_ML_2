@@ -67,20 +67,33 @@ def _artifact_info(model_artifact_path):
 
 
 
-def _resolved_model_label(model_name: str, task: str, runtime_model=None) -> str:
-    """Return a task-specific model label for clearer experiment logs."""
-    if runtime_model is not None:
-        cls = runtime_model.__class__.__name__.lower()
-        if "regressor" in cls:
-            return f"{model_name}_regressor"
-        if "classifier" in cls:
-            return f"{model_name}_classifier"
+def _runtime_model_metadata(model_name: str, task: str, runtime_model=None) -> dict:
+    """Return explicit runtime model metadata without changing canonical model key."""
+    estimator_class = runtime_model.__class__.__name__ if runtime_model is not None else None
 
-    if task == "regression":
-        return f"{model_name}_regressor"
-    if task == "classification":
-        return f"{model_name}_classifier"
-    return model_name
+    estimator_type = None
+    if estimator_class:
+        lowered = estimator_class.lower()
+        if "regressor" in lowered:
+            estimator_type = "regressor"
+        elif "classifier" in lowered:
+            estimator_type = "classifier"
+
+    if estimator_type is None:
+        if task == "regression":
+            estimator_type = "regressor"
+        elif task == "classification":
+            estimator_type = "classifier"
+
+    model_variant = f"{model_name}_{estimator_type}" if estimator_type else model_name
+
+    return {
+        "model_family": model_name,
+        "model_variant": model_variant,
+        "estimator_type": estimator_type,
+        "estimator_class": estimator_class,
+    }
+
 
 def _write_jsonl(path, record):
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -154,7 +167,7 @@ def log_experiment(
     # -----------------------------
     # full experiment record
     # -----------------------------
-    resolved_model = _resolved_model_label(model_name, task, runtime_model)
+    runtime_meta = _runtime_model_metadata(model_name, task, runtime_model)
 
     record = {
         "experiment_id": experiment_id,
@@ -165,6 +178,7 @@ def log_experiment(
         # -------------------------
         "model": resolved_model,
         "task": task,
+        "runtime_model": runtime_meta,
 
         # -------------------------
         # dataset reference
