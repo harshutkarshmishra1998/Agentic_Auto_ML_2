@@ -17,17 +17,6 @@ from retrain.langgraph_node import retrain_node
 from tests.schema_mapping import extract_schema
 from tests.json_printer import print_last_n_role_constants
 
-METADATA_FILE = "uploaded_files/churn/metadata.jsonl"
-DATA_FILE = "uploaded_files/churn/data.csv"
-
-cats, target = extract_schema(METADATA_FILE, DATA_FILE)
-
-# print("CATEGORICAL_COLUMNS = ", cats)
-# if target:
-#     print(f'TARGET_COLUMN = "{target}"')
-# else:
-#     print("TARGET_COLUMN = null")
-
 
 # --------------------------------------------------
 # BUILD GRAPH
@@ -66,10 +55,14 @@ def build_graph():
 # --------------------------------------------------
 if __name__ == "__main__":
 
+    metadata_file = "uploaded_files/churn/metadata.jsonl"
+    data_file = "uploaded_files/churn/data.csv"
+    cats, target = extract_schema(metadata_file, data_file)
+
     graph = build_graph()
 
     initial_state: AgentState = {
-        "data_path": DATA_FILE,
+        "data_path": data_file,
         "categorical_columns": cats,
         "target_column": target,
         "preprocess_last_n": 1,
