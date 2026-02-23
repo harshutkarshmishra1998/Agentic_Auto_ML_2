@@ -6,6 +6,26 @@ from scipy.stats import skew
 def _is_non_boolean_numeric(series):
     return pd.api.types.is_numeric_dtype(series) and not pd.api.types.is_bool_dtype(series)
 
+
+def _safe_abs_skew(series):
+    """
+    Returns absolute skew for sufficiently variable numeric data.
+    Prevents scipy precision-loss warnings on near-constant vectors.
+    """
+    s = series.dropna()
+
+    if len(s) < 5:
+        return None
+
+    # scipy.stats.skew can emit runtime warnings on (near) constant values
+    if s.nunique(dropna=True) <= 1:
+        return 0.0
+
+    if np.isclose(float(s.std(ddof=0)), 0.0):
+        return 0.0
+
+    return abs(float(skew(s)))
+
 def is_constant(series):
     """
     True if column has zero variance (only one unique value).
@@ -65,10 +85,12 @@ def missing_pattern(series, df):
 def distribution_shape(series):
     if not _is_non_boolean_numeric(series):
         return "N/A"
-    s = series.dropna()
-    if len(s) < 5:
+
+    abs_skew = _safe_abs_skew(series)
+    if abs_skew is None:
         return "unknown"
-    return "symmetric" if abs(skew(s)) < 0.5 else "skewed"
+
+    return "symmetric" if abs_skew < 0.5 else "skewed"
 
 
 def outliers_present(series):
@@ -182,11 +204,14 @@ def correlation_strength(col, df):
 def transform_hint(series):
     if not _is_non_boolean_numeric(series):
         return None
-    s = series.dropna()
-    if len(s) < 5:
+
+    abs_skew = _safe_abs_skew(series)
+    if abs_skew is None:
         return None
-    if abs(skew(s)) > 1:
+
+    if abs_skew > 1:
         return "log_candidate"
+
     return None
 
 
