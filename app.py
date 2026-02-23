@@ -151,8 +151,14 @@ if run_clicked and uploaded_file is not None:
 
     preprocessed = latest_preprocessed_final(DATA_DIR)
     if preprocessed:
-        st.session_state.preprocessed = preprocessed.read_bytes()
-        st.session_state.preprocessed_name = preprocessed.name
+        try:
+            st.session_state.preprocessed = preprocessed.read_bytes()
+            st.session_state.preprocessed_name = preprocessed.name
+        except (PermissionError, OSError):
+            st.warning(
+                f"Preprocessed final artifact found but not readable: {preprocessed}. "
+                "Please ensure it is a file and not locked by another process."
+            )
 
 if run_clicked and uploaded_file is None:
     st.warning("Please upload a file before running the pipeline.")

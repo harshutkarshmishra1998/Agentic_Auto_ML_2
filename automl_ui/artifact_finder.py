@@ -7,5 +7,9 @@ def latest_joblib(data_dir):
 
 
 def latest_preprocessed_final(data_dir):
-    matches = list(Path(data_dir).rglob("*preprocessed*final*"))
+    matches = [
+        p
+        for p in Path(data_dir).rglob("*preprocessed*final*")
+        if p.is_file() and p.suffix.lower() in {".csv", ".parquet"}
+    ]
     return max(matches, key=lambda p: p.stat().st_mtime) if matches else None
