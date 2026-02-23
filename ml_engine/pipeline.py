@@ -72,6 +72,31 @@ def _infer_task(target_column, y):
     return "classification"
 
 
+def _resolve_task(task_from_upstream, inferred_task, target_column, y):
+    """
+    Resolve task with lightweight safety overrides.
+
+    Upstream metadata is preferred, but we guard against known incompatible
+    combinations (for example regression selected while target is textual).
+    """
+    # No explicit target means unsupervised training.
+    if target_column is None:
+        return "clustering"
+
+    # Missing upstream task: trust local inference.
+    if not task_from_upstream:
+        return inferred_task
+
+    # Regression models require numeric target values.
+    # If target is non-numeric, force classification to avoid runtime crashes.
+    if task_from_upstream == "regression":
+        y_non_null = y.dropna() if isinstance(y, pd.Series) else pd.Series(y).dropna()
+        if not y_non_null.empty and not is_numeric_dtype(y_non_null):
+            return "classification"
+
+    return task_from_upstream
+
+
 def run_training(last_n=1):
 
     init_runs = _load_initializations()[-last_n:]
@@ -93,10 +118,12 @@ def run_training(last_n=1):
         task_from_upstream = _normalize_task(init_record.get("task"))
         inferred_task = _infer_task(target_column, y)
 
-        # Trust explicit upstream task unless it is clearly incompatible with available target.
-        task = task_from_upstream or inferred_task
-        if target_column is None:
-            task = "clustering"
+        task = _resolve_task(
+            task_from_upstream=task_from_upstream,
+            inferred_task=inferred_task,
+            target_column=target_column,
+            y=y,
+        )
 
         template = Template({
             "init": init_params,

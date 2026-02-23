@@ -124,7 +124,7 @@ class PreprocessContext:
             raise ValueError("Primary model missing")
 
         self.deferred = record["preprocessing"]["deferred"]
-        self.model_requirements = record["llm_analysis"]["model_dependent_preprocessing"]
+        self.model_requirements = record["llm_analysis"].get("model_dependent_preprocessing", {})
 
         self.model_key = self._match_model_key()
 
@@ -164,21 +164,16 @@ class PreprocessContext:
         if best_key and best_score >= 0.5:
             return best_key
 
-        # ---------- DEBUGGING INFO ----------
-        available = list(self.model_requirements.keys())
-
-        raise ValueError(
-            f"Model preprocessing requirements not found.\n"
-            f"Primary model: {self.primary_model}\n"
-            f"Canonical: {target}\n"
-            f"Target tokens: {sorted(target_tokens)}\n"
-            f"Available LLM keys: {available}"
-        )
+        # If model-specific keys are missing/incomplete, do not fail preprocessing.
+        # Preprocess 2 relies on deferred strategies, so this key is informational.
+        return None
 
     # -------------------------------------------------
 
     def get_required_model_prep(self):
-        return self.model_requirements[self.model_key]
+        if self.model_key is None:
+            return []
+        return self.model_requirements.get(self.model_key, [])
 
     # -------------------------------------------------
 
