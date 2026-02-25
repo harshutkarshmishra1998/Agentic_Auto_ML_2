@@ -1,33 +1,27 @@
 from langgraph.graph import StateGraph, END
-
 from agent_state import AgentState
 
 from schema_engine.langgraph_node import schema_inference_node
 from data_understanding.langgraph_node import data_understanding_node
 from preprocess_1.langgraph_node import preprocess_1_node
 from model_selector.langgraph_node import model_selector_node
-
-# NEW
 from preprocess_2.langgraph_node import preprocess_2_node
 from model_intializer.langgraph_node import model_initializer_node
 from ml_engine.langgraph_node import ml_training_node
 from evaluation_engine.langgraph_node import evaluation_node
 from retrain.langgraph_node import retrain_node
 
-from tests.schema_mapping import extract_schema
-from tests.json_printer import print_last_n_role_constants
+from patch.clear_data_folder import clear_project_data_dir
+from patch.copy_dataset import copy_dataset_to_user_uploads
+from parser.pipeline import run_pipeline
 
-METADATA_FILE = "uploaded_files/churn/metadata.jsonl"
 DATA_FILE = "uploaded_files/churn/data.csv"
 
-cats, target = extract_schema(METADATA_FILE, DATA_FILE)
+cats = ['state', 'area_code', 'international_plan', 'voice_mail_plan']
+target = 'CustomerChurned'
 
-# print("CATEGORICAL_COLUMNS = ", cats)
-# if target:
-#     print(f'TARGET_COLUMN = "{target}"')
-# else:
-#     print("TARGET_COLUMN = null")
-
+clear_project_data_dir()
+copy_dataset_to_user_uploads(DATA_FILE)
 
 # --------------------------------------------------
 # BUILD GRAPH
@@ -78,8 +72,7 @@ if __name__ == "__main__":
 
     result = graph.invoke(initial_state)
 
+    run_pipeline()
+
     print("\n=== FINAL STATE ===\n")
     print(result)
-
-    # print("\n=== LAST CLASSIFICATION ===\n")
-    # print_last_n_role_constants("data/data_classification.jsonl", n=1)

@@ -6,3 +6,8 @@ data/*.csv
 data/artifacts
 parser/data/csv
 parser/data/joblib
+
+archived_data/*.csv
+archived_data/artifacts
+parser/archived_data/csv
+parser/archived_data/joblib
