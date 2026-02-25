@@ -2,6 +2,7 @@
 .venv
 .vscode
 __pycache__/
-.archived
 data/*.csv
 data/artifacts
+parser/data/csv
+parser/data/joblib
