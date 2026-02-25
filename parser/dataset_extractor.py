@@ -85,7 +85,7 @@ def copy_joblib_from_dir(directory: Path, dest_dir: Path):
 # -----------------------------
 # MAIN
 # -----------------------------
-def main():
+def dataset_extractor():
     if not JSONL_FILE.exists():
         raise FileNotFoundError(f"JSONL not found: {JSONL_FILE}")
     
@@ -118,4 +118,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    dataset_extractor()

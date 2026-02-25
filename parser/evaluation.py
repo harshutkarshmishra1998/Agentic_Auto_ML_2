@@ -2,9 +2,10 @@
 import json
 from pathlib import Path
 from openpyxl import Workbook
+from parser.excel_writer import _auto_adjust_column_width_2
 
 INPUT = Path("data/evaluation.jsonl")
-OUTPUT = Path("parser/data/evaluation.xlsx")
+OUTPUT = Path("parser/data/xlsx/evaluation.xlsx")
 
 
 # -----------------------------------------------------
@@ -95,7 +96,7 @@ def write_record(ws, flat):
 # -----------------------------------------------------
 # main
 # -----------------------------------------------------
-def main():
+def evaluation():
 
     records = load(INPUT)
 
@@ -116,8 +117,9 @@ def main():
         ws.append(["message"])
         ws.append(["no evaluation records"])
 
+    _auto_adjust_column_width_2(wb)
     wb.save(OUTPUT)
 
 
 if __name__ == "__main__":
-    main()
+    evaluation()

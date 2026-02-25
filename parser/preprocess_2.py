@@ -3,11 +3,11 @@ import json
 from pathlib import Path
 from openpyxl import Workbook
 
-from parser.excel_writer import sheet_key_value, sheet_table
+from parser.excel_writer import sheet_key_value, sheet_table, _auto_adjust_column_width_2
 
 
 INPUT = Path("data/preprocess_2.jsonl")
-OUTPUT = Path("parser/data/preprocess_2.xlsx")
+OUTPUT = Path("parser/data/xlsx/preprocess_2.xlsx")
 
 
 # -----------------------------
@@ -92,7 +92,7 @@ def parse_record(wb, rec, idx):
 # -----------------------------
 # main
 # -----------------------------
-def main():
+def preprocess_2():
 
     records = load_jsonl(INPUT)
 
@@ -103,10 +103,11 @@ def main():
         parse_record(wb, rec, i)
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    _auto_adjust_column_width_2(wb)
     wb.save(OUTPUT)
 
-    print("Excel written →", OUTPUT)
+    # print("Excel written →", OUTPUT)
 
 
 if __name__ == "__main__":
-    main()
+    preprocess_2()

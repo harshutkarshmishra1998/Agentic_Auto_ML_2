@@ -2,11 +2,11 @@
 import json
 from pathlib import Path
 from openpyxl import Workbook
-from parser.excel_writer import sheet_table
+from parser.excel_writer import sheet_table, _auto_adjust_column_width_2
 
 
 INPUT = Path("data/ml_experiments.jsonl")
-OUTPUT = Path("parser/data/ml_experiments.xlsx")
+OUTPUT = Path("parser/data/xlsx/ml_experiments.xlsx")
 
 
 def load(path):
@@ -67,7 +67,7 @@ def parse_record(wb, rec, i):
         ws.append([flat.get(h) for h in headers])
 
 
-def main():
+def ml_experiment():
     records = load(INPUT)
 
     wb = Workbook()
@@ -89,8 +89,9 @@ def main():
         ws.append(["No experiments found in JSONL"])
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    _auto_adjust_column_width_2(wb)
     wb.save(OUTPUT)
 
 
 if __name__ == "__main__":
-    main()
+    ml_experiment()

@@ -3,11 +3,11 @@ import json
 from pathlib import Path
 from openpyxl import Workbook
 
-from parser.excel_writer import sheet_key_value, sheet_table
+from parser.excel_writer import sheet_key_value, sheet_table, _auto_adjust_column_width_2
 
 
 INPUT = Path("data/model_initialization.jsonl")
-OUTPUT = Path("parser/data/model_initialization.xlsx")
+OUTPUT = Path("parser/data/xlsx/model_initialization.xlsx")
 
 
 # -----------------------------
@@ -63,7 +63,7 @@ def parse_record(wb, rec, idx):
 # -----------------------------
 # main
 # -----------------------------
-def main():
+def model_initialization():
 
     records = load_jsonl(INPUT)
 
@@ -74,10 +74,11 @@ def main():
         parse_record(wb, rec, i)
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    _auto_adjust_column_width_2(wb)
     wb.save(OUTPUT)
 
     print("Excel written →", OUTPUT)
 
 
 if __name__ == "__main__":
-    main()
+    model_initialization()

@@ -2,10 +2,11 @@
 import json
 from pathlib import Path
 from openpyxl import Workbook
+from parser.excel_writer import _auto_adjust_column_width_2
 
 
 JSONL_FILENAME = "data/preprocesses_1.jsonl"
-OUTPUT_FILENAME = "parser/data/preprocesses_1.xlsx"
+OUTPUT_FILENAME = "parser/data/xlsx/preprocesses_1.xlsx"
 
 
 # -----------------------------------------------------
@@ -123,9 +124,18 @@ def _load_jsonl(path: Path):
 # -----------------------------------------------------
 # exporter
 # -----------------------------------------------------
-def export_jsonl_to_excel(jsonl_path: Path, output_xlsx: Path, n: int | None = None):
+def preprocess_1(n: int | None = None):
 
-    records = _load_jsonl(jsonl_path)
+    root = _project_root()
+    data_dir = root
+
+    jsonl_file = data_dir / JSONL_FILENAME
+    output_file = data_dir / OUTPUT_FILENAME
+
+    if not jsonl_file.exists():
+        raise FileNotFoundError(jsonl_file)
+
+    records = _load_jsonl(jsonl_file)
 
     if not records:
         print("No records found")
@@ -163,25 +173,16 @@ def export_jsonl_to_excel(jsonl_path: Path, output_xlsx: Path, n: int | None = N
             else:
                 _write_dict_sheet(wb, sheet, value)
 
-    output_xlsx.parent.mkdir(parents=True, exist_ok=True)
-    wb.save(output_xlsx)
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+    _auto_adjust_column_width_2(wb)
+    wb.save(output_file)
 
-    print(f"\nExcel written → {output_xlsx}")
-    print(f"Records exported → {len(records)}")
+    # print(f"\nExcel written → {output_file}")
+    # print(f"Records exported → {len(records)}")
 
 
 # -----------------------------------------------------
 # entry
 # -----------------------------------------------------
 if __name__ == "__main__":
-
-    root = _project_root()
-    data_dir = root
-
-    jsonl_file = data_dir / JSONL_FILENAME
-    output_file = data_dir / OUTPUT_FILENAME
-
-    if not jsonl_file.exists():
-        raise FileNotFoundError(jsonl_file)
-
-    export_jsonl_to_excel(jsonl_file, output_file, 13)
+    preprocess_1()

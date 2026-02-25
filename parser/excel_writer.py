@@ -44,3 +44,37 @@ def sheet_list(wb, name, values, header="value"):
     ws.append([header])
     for v in values:
         ws.append([fmt(v)])
+
+def _auto_adjust_column_width(ws, min_width=8, max_width=6000, padding=2):
+    for column_cells in ws.columns:
+        max_length = 0
+        column_letter = column_cells[0].column_letter
+
+        for cell in column_cells:
+            try:
+                value = "" if cell.value is None else str(cell.value)
+                max_length = max(max_length, len(value))
+            except Exception:
+                pass
+
+        adjusted_width = max(min_width, min(max_width, max_length + padding))
+        ws.column_dimensions[column_letter].width = adjusted_width
+
+def _auto_adjust_column_width_2(wb, min_width=8, max_width=6000, padding=2):
+    for ws in wb.worksheets:
+        for column_cells in ws.columns:
+            if not column_cells:
+                continue
+
+            max_length = 0
+            column_letter = column_cells[0].column_letter
+
+            for cell in column_cells:
+                try:
+                    value = "" if cell.value is None else str(cell.value)
+                    max_length = max(max_length, len(value))
+                except Exception:
+                    pass
+
+            adjusted_width = max(min_width, min(max_width, max_length + padding))
+            ws.column_dimensions[column_letter].width = adjusted_width

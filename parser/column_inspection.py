@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 from openpyxl import Workbook
+from parser.excel_writer import _auto_adjust_column_width
 
 
 # --------------------------------------------------
@@ -19,12 +20,14 @@ def _write_table(ws, rows, headers):
     ws.append(headers)
     for r in rows:
         ws.append([_fmt(r.get(h)) for h in headers])
+    _auto_adjust_column_width(ws)
 
 
 def _write_simple_list(ws, values, header="value"):
     ws.append([header])
     for v in values:
         ws.append([_fmt(v)])
+    _auto_adjust_column_width(ws)
 
 
 def _write_dependency_graph(ws, graph: dict):
@@ -35,12 +38,22 @@ def _write_dependency_graph(ws, graph: dict):
         else:
             for d in deps:
                 ws.append([k, d])
+    _auto_adjust_column_width(ws)
 
 
 # --------------------------------------------------
 # main exporter
 # --------------------------------------------------
-def export_full_inspection_bundle(jsonl_path: str, n: int, output_xlsx: str):
+def column_inspection(last_n: int | None = None):
+    PROJECT_ROOT = Path(__file__).resolve().parents[1]
+    JSONL_PATH = PROJECT_ROOT / "data"
+    XLSX_PATH= PROJECT_ROOT / "parser" / "data" / "xlsx"
+
+    XLSX_PATH.mkdir(parents=True, exist_ok=True)
+
+    jsonl_path = JSONL_PATH/"column_inspection.jsonl"
+    output_xlsx = XLSX_PATH/"column_inspection.xlsx"
+
     path = Path(jsonl_path)
     if not path.exists():
         raise FileNotFoundError(path)
@@ -50,7 +63,11 @@ def export_full_inspection_bundle(jsonl_path: str, n: int, output_xlsx: str):
         print("JSONL empty")
         return
 
-    start = max(0, len(lines) - n)
+    # start = max(0, len(lines) - n)
+    if last_n is None:
+        start = 0
+    else:
+        start = max(0, len(lines) - last_n)
 
     wb = Workbook()
     wb.remove(wb.active)  # remove default sheet
@@ -67,6 +84,7 @@ def export_full_inspection_bundle(jsonl_path: str, n: int, output_xlsx: str):
         ws = wb.create_sheet(prefix + "metadata")
         ws.append(["dataset_file_name", dataset_name])
         ws.append(["dataset_file_path", dataset_path])
+        _auto_adjust_column_width(ws)
 
         # ---------------- column_profiles ----------------
         column_profiles = obj.get("column_profiles", [])
@@ -112,16 +130,11 @@ def export_full_inspection_bundle(jsonl_path: str, n: int, output_xlsx: str):
     output.parent.mkdir(parents=True, exist_ok=True)
     wb.save(output)
 
-    print(f"Excel bundle exported → {output}")
+    # print(f"Excel bundle exported → {output}")
 
 
 # --------------------------------------------------
 # run
 # --------------------------------------------------
 if __name__ == "__main__":
-
-    JSONL_FILE = "data/column_inspection.jsonl"
-    OUTPUT_XLSX = "parser/data/column_inspection.xlsx"
-    n = 13
-
-    export_full_inspection_bundle(JSONL_FILE, n, OUTPUT_XLSX)
+    column_inspection()

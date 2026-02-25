@@ -2,11 +2,11 @@
 import json
 from pathlib import Path
 from openpyxl import Workbook
-from parser.excel_writer import sheet_key_value, sheet_table
+from parser.excel_writer import sheet_key_value, sheet_table, _auto_adjust_column_width_2
 
 
 INPUT = Path("data/model_selection.jsonl")
-OUTPUT = Path("parser/data/model_selection.xlsx")
+OUTPUT = Path("parser/data/xlsx/model_selection.xlsx")
 
 
 def load(path):
@@ -36,7 +36,7 @@ def parse_record(wb, rec, i):
         sheet_key_value(wb, prefix + "selected_model", {"model": selected})
 
 
-def main():
+def model_selection():
     records = load(INPUT)
 
     wb = Workbook()
@@ -45,8 +45,9 @@ def main():
     for i, rec in enumerate(records, 1):
         parse_record(wb, rec, i)
 
+    _auto_adjust_column_width_2(wb)
     wb.save(OUTPUT)
 
 
 if __name__ == "__main__":
-    main()
+    model_selection()

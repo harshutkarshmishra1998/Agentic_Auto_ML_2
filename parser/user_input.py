@@ -2,11 +2,11 @@
 import json
 from pathlib import Path
 from openpyxl import Workbook
-from parser.excel_writer import sheet_key_value, sheet_table
+from parser.excel_writer import sheet_key_value, sheet_table, _auto_adjust_column_width_2
 
 
 INPUT = Path("data/user_input.jsonl")
-OUTPUT = Path("parser/data/user_input.xlsx")
+OUTPUT = Path("parser/data/xlsx/user_input.xlsx")
 
 
 def load_jsonl(path):
@@ -41,7 +41,7 @@ def parse_record(wb, rec, idx):
         )
 
 
-def main():
+def user_input():
     records = load_jsonl(INPUT)
 
     wb = Workbook()
@@ -50,8 +50,9 @@ def main():
     for i, rec in enumerate(records, 1):
         parse_record(wb, rec, i)
 
+    _auto_adjust_column_width_2(wb)
     wb.save(OUTPUT)
 
 
 if __name__ == "__main__":
-    main()
+    user_input()

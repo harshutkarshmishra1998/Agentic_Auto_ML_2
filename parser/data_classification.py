@@ -2,11 +2,11 @@
 import json
 from pathlib import Path
 from openpyxl import Workbook
-from parser.excel_writer import sheet_key_value
+from parser.excel_writer import sheet_key_value, _auto_adjust_column_width_2
 
 
 INPUT = Path("data/data_classification.jsonl")
-OUTPUT = Path("parser/data/data_classification.xlsx")
+OUTPUT = Path("parser/data/xlsx/data_classification.xlsx")
 
 
 def load(path):
@@ -79,7 +79,7 @@ def parse_record(wb, rec, i):
     if clustering:
         sheet_key_value(wb, prefix + "clustering", clustering)
 
-def main():
+def data_classification():
     records = load(INPUT)
 
     wb = Workbook()
@@ -87,9 +87,10 @@ def main():
 
     for i, rec in enumerate(records, 1):
         parse_record(wb, rec, i)
-
+    
+    _auto_adjust_column_width_2(wb)
     wb.save(OUTPUT)
 
 
 if __name__ == "__main__":
-    main()
+    data_classification()
