@@ -14,15 +14,9 @@ from retrain.langgraph_node import retrain_node
 from patch.clear_data_folder import clear_project_data_dir
 from patch.copy_dataset import copy_dataset_to_user_uploads
 from patch.llm_response import analyze_pipeline_directory
+from patch.files_registry import list_pipeline_outputs
 from parser.pipeline import run_pipeline
 
-DATA_FILE = "uploaded_files/churn/data.csv"
-
-cats = ['state', 'area_code', 'international_plan', 'voice_mail_plan']
-target = 'CustomerChurned'
-
-clear_project_data_dir()
-copy_dataset_to_user_uploads(DATA_FILE)
 
 # --------------------------------------------------
 # BUILD GRAPH
@@ -56,10 +50,14 @@ def build_graph():
     return builder.compile()
 
 
-# --------------------------------------------------
-# RUN
-# --------------------------------------------------
-if __name__ == "__main__":
+def run_process(DATA_FILE, cats=[], target=None):
+
+    # print(cats)
+    # print(target)
+    # return []
+
+    clear_project_data_dir()
+    copy_dataset_to_user_uploads(DATA_FILE)
 
     graph = build_graph()
 
@@ -75,7 +73,31 @@ if __name__ == "__main__":
 
     run_pipeline()
 
+    llm_response = "Tested"
     llm_response = analyze_pipeline_directory()
 
+    files_resgistry = list_pipeline_outputs()
+
+    return [result, llm_response, files_resgistry]
+
+
+# --------------------------------------------------
+# RUN
+# --------------------------------------------------
+if __name__ == "__main__":
+
+    DATA_FILE = "uploaded_files/churn/data.csv"
+
+    cats = []
+    target = None
+
+    cats = ['state', 'area_code', 'international_plan', 'voice_mail_plan']
+    target = 'CustomerChurned'
+
+    final_answer = run_process(DATA_FILE, cats, target)
+
     print("\n=== LLM RESPONSE ===\n")
-    print(llm_response)
+    print(final_answer[1])
+
+    print("\n=== FILES REGISTRY ===\n")
+    print(final_answer[2])
