@@ -13,6 +13,7 @@ from retrain.langgraph_node import retrain_node
 
 from patch.clear_data_folder import clear_project_data_dir
 from patch.copy_dataset import copy_dataset_to_user_uploads
+from patch.llm_response import analyze_pipeline_directory
 from parser.pipeline import run_pipeline
 
 DATA_FILE = "uploaded_files/churn/data.csv"
@@ -74,5 +75,7 @@ if __name__ == "__main__":
 
     run_pipeline()
 
-    print("\n=== FINAL STATE ===\n")
-    print(result)
+    llm_response = analyze_pipeline_directory()
+
+    print("\n=== LLM RESPONSE ===\n")
+    print(llm_response)
