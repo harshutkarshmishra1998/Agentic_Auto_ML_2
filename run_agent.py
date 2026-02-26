@@ -67,6 +67,7 @@ def run_process(DATA_FILE, cats=[], target=None):
     run_pipeline() # Prepares the xlsx reports
 
     llm_response = analyze_pipeline_directory()
+    # llm_response = "TEST"
 
     files_resgistry = list_pipeline_outputs()
 

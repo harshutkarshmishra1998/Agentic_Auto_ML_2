@@ -72,7 +72,7 @@ def _build_prompt(file_name: str, content: str):
     return f"""
 You are a senior ML pipeline auditor.
 
-Analyze this file deeply and technically.
+Analyze this file technically in 100-150 words.
 
 FILE: {file_name}
 
