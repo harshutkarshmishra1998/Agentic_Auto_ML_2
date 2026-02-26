@@ -52,13 +52,6 @@ def build_graph():
 
 def run_process(DATA_FILE, cats=[], target=None):
 
-    # print(cats)
-    # print(target)
-    # return []
-
-    clear_project_data_dir()
-    copy_dataset_to_user_uploads(DATA_FILE)
-
     graph = build_graph()
 
     initial_state: AgentState = {
@@ -71,9 +64,8 @@ def run_process(DATA_FILE, cats=[], target=None):
 
     result = graph.invoke(initial_state)
 
-    run_pipeline()
+    run_pipeline() # Prepares the xlsx reports
 
-    llm_response = "Tested"
     llm_response = analyze_pipeline_directory()
 
     files_resgistry = list_pipeline_outputs()
@@ -86,10 +78,14 @@ def run_process(DATA_FILE, cats=[], target=None):
 # --------------------------------------------------
 if __name__ == "__main__":
 
-    DATA_FILE = "uploaded_files/churn/data.csv"
+    clear_project_data_dir()
 
     cats = []
     target = None
+
+    DATA_FILE = "uploaded_files/churn/data.csv"
+
+    copy_dataset_to_user_uploads(DATA_FILE)
 
     cats = ['state', 'area_code', 'international_plan', 'voice_mail_plan']
     target = 'CustomerChurned'
