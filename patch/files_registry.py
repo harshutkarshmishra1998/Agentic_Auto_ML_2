@@ -64,15 +64,15 @@ DISPLAY_NAME_MAPPING = {
     "evaluation.jsonl": "EVALUATION_LOGS",
 
     # ---------------- XLSX REPORT FILES ----------------
-    "user_input.xlsx": "USER_INPUT_FILE",
-    "data_classification.xlsx": "DATA_CLASSIFICATION_FILE",
-    "column_inspection.xlsx": "COLUMN_INSPECTION_FILE",
-    "preprocesses_1.xlsx": "PREPROCESS_1_FILE",
-    "model_selection.xlsx": "MODEL_SELECTION_FILE",
-    "preprocess_2.xlsx": "PREPROCESS_2_FILE",
-    "model_initialization.xlsx": "MODEL_INITIALIZATION_FILE",
-    "ml_experiments.xlsx": "ML_EXPERIMENTS_FILE",
-    "evaluation.xlsx": "EVALUATION_FILE",
+    "user_input.xlsx": "USER_INPUT_REPORT",
+    "data_classification.xlsx": "DATA_CLASSIFICATION_REPORT",
+    "column_inspection.xlsx": "COLUMN_INSPECTION_REPORT",
+    "preprocesses_1.xlsx": "PREPROCESS_1_REPORT",
+    "model_selection.xlsx": "MODEL_SELECTION_REPORT",
+    "preprocess_2.xlsx": "PREPROCESS_2_REPORT",
+    "model_initialization.xlsx": "MODEL_INITIALIZATION_REPORT",
+    "ml_experiments.xlsx": "ML_EXPERIMENTS_REPORT",
+    "evaluation.xlsx": "EVALUATION_REPORT",
 
     # ---------------- FINAL OUTPUTS ----------------
     "*preprocessed*final.csv": "FINAL PREPROCESSED DATASET",

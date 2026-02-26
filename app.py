@@ -201,32 +201,61 @@ if st.session_state.pipeline_ran:
     st.code(st.session_state.llm_response, language="markdown")
 
     st.divider()
-    st.subheader("📦 Download Outputs")
+    # st.subheader("📦 Download Outputs")
 
-    files_registry = st.session_state.files_registry
+    # files_registry = st.session_state.files_registry
 
-    # ---- FILTER FILES ----
-    csv_files = collect_parser_csv(files_registry) if files_registry else []
+    # # ---- FILTER FILES ----
+    # csv_files = collect_parser_csv(files_registry) if files_registry else []
 
-    xlsx_files = [
-        f for f in files_registry
-        if f["file_name"].lower().endswith(".xlsx")
-    ] if files_registry else []
+    # xlsx_files = [
+    #     f for f in files_registry
+    #     if f["file_name"].lower().endswith(".xlsx")
+    # ] if files_registry else []
 
-    jsonl_files = [
-        f["file_path"] for f in files_registry
-        if f["file_name"].lower().endswith(".jsonl")
-    ] if files_registry else []
+    # jsonl_files = [
+    #     f["file_path"] for f in files_registry
+    #     if f["file_name"].lower().endswith(".jsonl")
+    # ] if files_registry else []
 
-    colA, colB, colC = st.columns(3)
+    # colA, colB, colC = st.columns(3)
 
 
-    # ================= CSV =================
+    # # ================= CSV =================
     # with colA:
     #     st.markdown("### CSV Files")
 
-    #     if csv_files:
-    #         fobj = csv_files[0]  # only 1 button
+    #     # fresh compute every rerun
+    #     csv_files = [
+    #         f for f in files_registry #type: ignore
+    #         if f["file_name"].lower().endswith(".csv")
+    #         and "parser\\data\\csv" in f["file_path"].lower()
+    #     ]
+
+    #     if not csv_files:
+    #         st.warning("No parser CSV found.")
+    #     else:
+    #         # enforce exactly ONE button
+    #         fobj = csv_files[0]
+
+    #         path = fobj["file_path"]
+
+    #         if os.path.exists(path):
+    #             with open(path, "rb") as file_data:
+    #                 st.download_button(
+    #                     label=fobj["display_name"],   # ✅ display name
+    #                     data=file_data,
+    #                     file_name=fobj["file_name"],
+    #                     key=f"csv_{hash(path)}",
+    #                     use_container_width=True
+    #                 )
+
+
+    # # ================= XLSX =================
+    # with colB:
+    #     st.markdown("### XLSX Reports")
+
+    #     for fobj in xlsx_files:
     #         path = fobj["file_path"]
     #         label = fobj["display_name"]
 
@@ -236,70 +265,118 @@ if st.session_state.pipeline_ran:
     #                     label=label,  # ✅ display name
     #                     data=file_data,
     #                     file_name=fobj["file_name"],
-    #                     key=f"csv_{hash(path)}",
+    #                     key=f"xlsx_{hash(path)}",
     #                     use_container_width=True
     #                 )
-    # ================= CSV =================
-    with colA:
-        st.markdown("### CSV Files")
 
-        # fresh compute every rerun
-        csv_files = [
-            f for f in files_registry #type: ignore
-            if f["file_name"].lower().endswith(".csv")
-            and "parser\\data\\csv" in f["file_path"].lower()
-        ]
 
-        if not csv_files:
-            st.warning("No parser CSV found.")
-        else:
-            # enforce exactly ONE button
-            fobj = csv_files[0]
+    # # ================= JSONL =================
+    # with colC:
+    #     st.markdown("### JSONL Logs")
 
-            path = fobj["file_path"]
+    #     if jsonl_files:
+    #         zip_path = create_zip(jsonl_files)
 
+    #         with open(zip_path, "rb") as f:
+    #             st.download_button(
+    #                 label="Download All JSONL Logs",
+    #                 data=f,
+    #                 file_name="pipeline_logs.zip",
+    #                 key="jsonl_zip_download",
+    #                 use_container_width=True
+    #             )
+    st.subheader("📦 Download Outputs")
+
+    files_registry = st.session_state.files_registry
+
+    # --------- Categorize Files ---------
+    parser_csv = None
+    joblib_file = None
+    jsonl_files = []
+    xlsx_files = []
+
+    for f in files_registry: #type: ignore
+
+        path = f["file_path"]
+        name = f["file_name"].lower()
+
+        # Final Preprocessed CSV (parser only)
+        if name.endswith(".csv") and "\\parser\\data\\csv\\" in path.lower():
+            parser_csv = f
+
+        # Trained Model
+        elif name.endswith(".joblib"):
+            joblib_file = f
+
+        # JSON Logs
+        elif name.endswith(".jsonl"):
+            jsonl_files.append(path)
+
+        # Excel Reports
+        elif name.endswith(".xlsx"):
+            xlsx_files.append(f)
+
+
+    col1, col2 = st.columns(2)
+
+
+    # ================= COLUMN 1 =================
+    with col1:
+        st.markdown("### Core Artifacts")
+
+        # ---- Preprocessed CSV ----
+        if parser_csv:
+            path = parser_csv["file_path"]
             if os.path.exists(path):
                 with open(path, "rb") as file_data:
                     st.download_button(
-                        label=fobj["display_name"],   # ✅ display name
+                        label=parser_csv["display_name"],
                         data=file_data,
-                        file_name=fobj["file_name"],
-                        key=f"csv_{hash(path)}",
+                        file_name=parser_csv["file_name"],
+                        key="download_final_csv",
                         use_container_width=True
                     )
 
-
-    # ================= XLSX =================
-    with colB:
-        st.markdown("### XLSX Reports")
-
-        for fobj in xlsx_files:
-            path = fobj["file_path"]
-            label = fobj["display_name"]
-
+        # ---- Trained Model ----
+        if joblib_file:
+            path = joblib_file["file_path"]
             if os.path.exists(path):
                 with open(path, "rb") as file_data:
                     st.download_button(
-                        label=label,  # ✅ display name
+                        label=joblib_file["display_name"],
                         data=file_data,
-                        file_name=fobj["file_name"],
-                        key=f"xlsx_{hash(path)}",
+                        file_name=joblib_file["file_name"],
+                        key="download_model_joblib",
                         use_container_width=True
                     )
 
-
-    # ================= JSONL =================
-    with colC:
-        st.markdown("### JSONL Logs")
-
+        # ---- JSONL Logs ZIP ----
         if jsonl_files:
             zip_path = create_zip(jsonl_files)
 
             with open(zip_path, "rb") as f:
                 st.download_button(
-                    label="Download All JSONL Logs",
+                    label="PIPELINE JSON LOGS (ZIP)",
                     data=f,
                     file_name="pipeline_logs.zip",
-                    key="jsonl_zip_download",
+                    key="download_json_zip",
                     use_container_width=True
                 )
+
+
+    # ================= COLUMN 2 =================
+    with col2:
+        st.markdown("### Excel Reports")
+
+        for fobj in xlsx_files:
+            path = fobj["file_path"]
+
+            if os.path.exists(path):
+                with open(path, "rb") as file_data:
+                    st.download_button(
+                        label=fobj["display_name"].replace("_", " "),
+                        data=file_data,
+                        file_name=fobj["file_name"],
+                        key=f"xlsx_{hash(path)}",
+                        use_container_width=True
+                    )
