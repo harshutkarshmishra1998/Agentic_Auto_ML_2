@@ -142,7 +142,7 @@ with col2:
 
     target_input = st.text_input(
         "Target Column",
-        placeholder="CustomerChurned"
+        placeholder=""
     )
 
 st.divider()
