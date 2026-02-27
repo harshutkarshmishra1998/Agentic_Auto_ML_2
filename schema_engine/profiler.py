@@ -42,11 +42,26 @@ def _datetime_parse_ratio(series: pd.Series):
     return hits / min(len(s),500)
 
 
+def _safe_min_max(series: pd.Series):
+    """Return min/max without failing on mixed Python object types."""
+    non_null = series.dropna()
+
+    if non_null.empty:
+        return None, None
+
+    try:
+        return non_null.min(), non_null.max()
+    except TypeError:
+        as_str = non_null.astype(str)
+        return as_str.min(), as_str.max()
+
+
 def profile_dataframe(df: pd.DataFrame):
     profiles = {}
 
     for col in df.columns:
         s = df[col]
+        min_val, max_val = _safe_min_max(s)
         n = len(s)
         n_unique = s.nunique(dropna=True)
 
@@ -70,8 +85,8 @@ def profile_dataframe(df: pd.DataFrame):
             is_integer_like=bool(integer_like),
             mean=mean,
             std=std,
-            min_val=s.min(),
-            max_val=s.max(),
+            min_val=min_val,
+            max_val=max_val,
             sample_values=s.dropna().astype(str).unique()[:10].tolist(),
             parseable_datetime_ratio=_datetime_parse_ratio(s),
         )
