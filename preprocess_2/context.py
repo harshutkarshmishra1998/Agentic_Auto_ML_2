@@ -2,9 +2,7 @@ import re
 from pathlib import Path
 
 
-# -------------------------------------------------
 # MODEL NAME ALIAS MAP (must mirror model_rules)
-# -------------------------------------------------
 
 MODEL_NAME_ALIASES = {
     "randomforestclassifier": "random_forest",
@@ -107,9 +105,7 @@ def _model_tokens(name: str | None) -> set[str]:
     return {t for t in tokens if t and t not in GENERIC_MODEL_TOKENS}
 
 
-# -------------------------------------------------
 # CONTEXT
-# -------------------------------------------------
 
 class PreprocessContext:
 
@@ -128,7 +124,7 @@ class PreprocessContext:
 
         self.model_key = self._match_model_key()
 
-    # -------------------------------------------------
+
 
     def _match_model_key(self):
         """
@@ -168,14 +164,14 @@ class PreprocessContext:
         # Preprocess 2 relies on deferred strategies, so this key is informational.
         return None
 
-    # -------------------------------------------------
+
 
     def get_required_model_prep(self):
         if self.model_key is None:
             return []
         return self.model_requirements.get(self.model_key, [])
 
-    # -------------------------------------------------
+
 
     def get_columns(self, strategy):
         return [

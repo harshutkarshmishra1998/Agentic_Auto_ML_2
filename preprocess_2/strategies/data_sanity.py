@@ -8,17 +8,13 @@ def apply(df):
 
     dropped = []
 
-    # -----------------------------
     # 1. all-null columns
-    # -----------------------------
     null_cols = df.columns[df.isna().all()].tolist()
     if null_cols:
         df = df.drop(columns=null_cols)
         dropped.extend(null_cols)
 
-    # -----------------------------
     # 2. constant columns
-    # -----------------------------
     constant_cols = [
         c for c in df.columns
         if df[c].nunique(dropna=False) <= 1
@@ -28,9 +24,7 @@ def apply(df):
         df = df.drop(columns=constant_cols)
         dropped.extend(constant_cols)
 
-    # -----------------------------
     # 3. near-zero variance numeric
-    # -----------------------------
     numeric = df.select_dtypes(include=np.number)
     low_var = numeric.var()
     low_var_cols = low_var[low_var < 1e-12].index.tolist()

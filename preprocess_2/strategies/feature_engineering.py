@@ -2,9 +2,7 @@
 # import pandas as pd
 
 
-# # --------------------------------------------------
 # # SAFETY LIMITS (CRITICAL)
-# # --------------------------------------------------
 
 # MAX_INTERACTIONS = 50
 # MAX_RATIOS = 50
@@ -22,9 +20,7 @@
 #     new_features = {}
 #     created = 0
 
-#     # -----------------------------------------
 #     # 1. LOG STABILIZATION (skewed numeric only)
-#     # -----------------------------------------
 #     log_count = 0
 #     for col in numeric:
 
@@ -42,9 +38,7 @@
 #         if created >= MAX_TOTAL_NEW_FEATURES:
 #             break
 
-#     # -----------------------------------------
 #     # 2. INTERACTIONS (variance-ranked features)
-#     # -----------------------------------------
 #     var_rank = df[numeric].var().sort_values(ascending=False).index.tolist()
 #     interaction_pairs = []
 
@@ -62,9 +56,7 @@
 #         if created >= MAX_TOTAL_NEW_FEATURES:
 #             break
 
-#     # -----------------------------------------
 #     # 3. RATIO FEATURES (safe divide)
-#     # -----------------------------------------
 #     ratio_count = 0
 #     for c1, c2 in interaction_pairs:
 
@@ -83,9 +75,7 @@
 #         if created >= MAX_TOTAL_NEW_FEATURES:
 #             break
 
-#     # -----------------------------------------
 #     # 4. FREQUENCY ENCODING
-#     # -----------------------------------------
 #     for col in categorical:
 #         freq = df[col].value_counts(normalize=True)
 #         new_col = f"{col}_freq"
@@ -96,9 +86,7 @@
 #         if created >= MAX_TOTAL_NEW_FEATURES:
 #             break
 
-#     # -----------------------------------------
 #     # APPLY FEATURES (single concat)
-#     # -----------------------------------------
 #     if new_features:
 #         feat_df = pd.DataFrame(new_features, index=df.index)
 #         df = pd.concat([df, feat_df], axis=1)

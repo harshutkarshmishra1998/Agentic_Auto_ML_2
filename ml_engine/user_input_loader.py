@@ -2,17 +2,13 @@ import json
 from pathlib import Path
 
 
-# --------------------------------------------------
 # helpers
-# --------------------------------------------------
 
 def _get_project_root():
     return Path(__file__).resolve().parents[1]
 
 
-# --------------------------------------------------
 # public loader
-# --------------------------------------------------
 
 def load_last_n_targets(last_n: int):
     """

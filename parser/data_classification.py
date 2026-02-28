@@ -40,7 +40,7 @@ def parse_record(wb, rec, i):
     feature_mapping = {}
     clustering = {}
 
-    # ---------- separate structures ----------
+    # separate structures
     for k, v in rec.items():
         if k == "feature_mapping":
             feature_mapping = v
@@ -49,11 +49,11 @@ def parse_record(wb, rec, i):
         else:
             metadata[k] = v
 
-    # ---------- metadata sheet ----------
+    # metadata sheet
     if metadata:
         sheet_key_value(wb, prefix + "metadata", metadata)
 
-    # ---------- feature mapping table ----------
+    # feature mapping table
     if feature_mapping:
 
         from parser.excel_writer import sheet_table
@@ -75,7 +75,7 @@ def parse_record(wb, rec, i):
             rows,
         )
 
-    # ---------- clustering ----------
+    # clustering
     if clustering:
         sheet_key_value(wb, prefix + "clustering", clustering)
 

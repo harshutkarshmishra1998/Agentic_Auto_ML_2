@@ -14,9 +14,7 @@ JSONL_FILENAME = "preprocesses_1.jsonl"
 OUTPUT_FILENAME = "preprocesses_1.xlsx"
 
 
-# -----------------------------------------------------
 # helpers
-# -----------------------------------------------------
 def _project_root():
     return Path(__file__).resolve().parents[1]
 
@@ -55,9 +53,7 @@ def _write_simple_list(wb, sheet_name, values):
         ws.append([_fmt(v)])
 
 
-# -----------------------------------------------------
 # robust JSON loader
-# -----------------------------------------------------
 def _load_jsonl(path: Path):
     text = path.read_text(encoding="utf-8")
 
@@ -92,9 +88,7 @@ def _load_jsonl(path: Path):
     return objs
 
 
-# -----------------------------------------------------
 # exporter
-# -----------------------------------------------------
 def export_jsonl_to_excel(jsonl_path: Path, output_xlsx: Path, n: int | None = None):
 
     records = _load_jsonl(jsonl_path)
@@ -142,9 +136,7 @@ def export_jsonl_to_excel(jsonl_path: Path, output_xlsx: Path, n: int | None = N
     print(f"Records exported → {len(records)}")
 
 
-# -----------------------------------------------------
 # entry
-# -----------------------------------------------------
 if __name__ == "__main__":
 
     root = _project_root()

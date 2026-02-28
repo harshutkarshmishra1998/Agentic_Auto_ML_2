@@ -7,17 +7,13 @@ from .context import PreprocessContext
 from .dispatcher import run_strategies
 
 
-# -------------------------------------------------
 # CONFIG
-# -------------------------------------------------
 
 MODEL_SELECTION_LOG = Path("data/model_selection.jsonl")
 PREPROCESS_2_LOG = Path("data/preprocess_2.jsonl")
 
 
-# -------------------------------------------------
 # LOAD MODEL SELECTION RECORDS
-# -------------------------------------------------
 
 def load_last_n_records(n: int):
 
@@ -30,9 +26,7 @@ def load_last_n_records(n: int):
     return records[-n:]
 
 
-# -------------------------------------------------
 # APPEND TO GLOBAL LOG
-# -------------------------------------------------
 
 def append_preprocess_log(entry: dict):
     """
@@ -46,9 +40,7 @@ def append_preprocess_log(entry: dict):
         f.write("\n")
 
 
-# -------------------------------------------------
 # PROCESS SINGLE RECORD
-# -------------------------------------------------
 
 def process_one(record):
 
@@ -58,7 +50,7 @@ def process_one(record):
 
     df, strategy_logs = run_strategies(df, ctx)
 
-    # ---------------- save dataset ----------------
+    # save dataset
 
     final_path = ctx.dataset_path.with_name(
         ctx.dataset_path.stem + "_final.csv"
@@ -67,7 +59,7 @@ def process_one(record):
     ensure_parent(final_path)
     df.to_csv(final_path, index=False)
 
-    # ---------------- build log entry ----------------
+    # build log entry
 
     log_entry = {
         "timestamp": now_iso(),
@@ -88,9 +80,7 @@ def process_one(record):
     }
 
 
-# -------------------------------------------------
 # MAIN RUNNER
-# -------------------------------------------------
 
 def run_preprocess_2(last_n: int = 1):
 

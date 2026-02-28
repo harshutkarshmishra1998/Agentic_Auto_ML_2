@@ -7,9 +7,9 @@ class LightGBMTemplate(ModelTemplate):
 
     def build(self):
         if self.config["task"] == "regression":
-            self.model = LGBMRegressor(**self.config["init"])
+            self.model = LGBMRegressor(**self.config["init"]) #type: ignore
         else:
-            self.model = LGBMClassifier(**self.config["init"])
+            self.model = LGBMClassifier(**self.config["init"]) #type: ignore
 
     def metric(self, y_true, y_pred):
         if self.config["task"] == "regression":

@@ -19,9 +19,7 @@ from pathlib import Path
 import traceback
 
 
-# --------------------------------------------------
 # DATASET SELECTION (single or range)
-# --------------------------------------------------
 def select_dataset_folders(base_dir="uploaded_files"):
     base = Path(base_dir)
 
@@ -45,7 +43,7 @@ def select_dataset_folders(base_dir="uploaded_files"):
         raw = input("\nSelect dataset number OR range (e.g. 3 or 1-5): ").strip()
 
         try:
-            # ---------- single ----------
+            # single
             if "-" not in raw:
                 idx = int(raw)
                 if 1 <= idx <= len(folders):
@@ -54,7 +52,7 @@ def select_dataset_folders(base_dir="uploaded_files"):
                     print("Invalid number")
                     continue
 
-            # ---------- range ----------
+            # range
             start, end = map(int, raw.split("-"))
 
             if start > end:
@@ -71,9 +69,7 @@ def select_dataset_folders(base_dir="uploaded_files"):
             print("Invalid input. Try again.")
 
 
-# --------------------------------------------------
 # BUILD GRAPH
-# --------------------------------------------------
 def build_graph():
 
     builder = StateGraph(AgentState)
@@ -102,9 +98,7 @@ def build_graph():
     return builder.compile()
 
 
-# --------------------------------------------------
 # RUN PIPELINE
-# --------------------------------------------------
 if __name__ == "__main__":
 
     selected_folders = select_dataset_folders()
@@ -129,10 +123,10 @@ if __name__ == "__main__":
             raise FileNotFoundError(f"{metadata_file} not found")
 
         try:
-            # ---------------- schema extraction ----------------
+            # schema extraction
             cats, target = extract_schema(str(metadata_file), str(data_file))
 
-            # ---------------- initial state ----------------
+            # initial state
             initial_state: AgentState = {
                 "data_path": str(data_file),
                 "categorical_columns": cats,
@@ -141,7 +135,7 @@ if __name__ == "__main__":
                 "evaluation_last_n": 1,
             }
 
-            # ---------------- run graph ----------------
+            # run graph
             result = graph.invoke(initial_state)
 
             # print("\n=== FINAL STATE ===\n")

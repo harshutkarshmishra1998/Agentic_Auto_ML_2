@@ -48,9 +48,6 @@ def export_column_inspection(dataset_path, payload):
         **payload
     }
 
-    # -----------------------------
-    # ensure newline separation
-    # -----------------------------
     with open(out_path, "a+", encoding="utf-8") as f:
 
         # move cursor to end

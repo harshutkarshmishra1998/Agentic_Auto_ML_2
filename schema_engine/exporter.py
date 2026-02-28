@@ -22,9 +22,7 @@ def export_schema_result(
 
     jsonl_path = data_dir / "data_classification.jsonl"
 
-    # ------------------------------
     # build feature mapping
-    # ------------------------------
     feature_mapping = {}
 
     for col, info in schema_result["columns"].items():
@@ -33,9 +31,7 @@ def export_schema_result(
             "confidence": info["confidence"],
         }
 
-    # ------------------------------
     # single dataset record
-    # ------------------------------
     record = {
         "dataset_file_path": str(dataset_path),
         "dataset_file_name": dataset_path.name,
@@ -45,9 +41,7 @@ def export_schema_result(
         "feature_mapping": feature_mapping,
     }
 
-    # ------------------------------
     # append JSONL
-    # ------------------------------
     with open(jsonl_path, "a", encoding="utf-8") as f:
         f.write(json.dumps(record, ensure_ascii=False) + "\n")
 

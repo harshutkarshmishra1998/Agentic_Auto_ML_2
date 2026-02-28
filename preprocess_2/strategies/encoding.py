@@ -40,9 +40,7 @@ def apply(df, columns):
     freq_cols = []
     dropped_cols = []
 
-    # ----------------------------
     # classify columns by cardinality
-    # ----------------------------
     for col in columns:
 
         nunique = df[col].nunique(dropna=False)
@@ -58,17 +56,13 @@ def apply(df, columns):
         "frequency_columns": freq_cols,
     }
 
-    # ----------------------------
     # frequency encoding
-    # ----------------------------
     for col in freq_cols:
         freq = df[col].value_counts(normalize=True)
         df[col + "_freq"] = df[col].map(freq)
         df.drop(columns=col, inplace=True)
 
-    # ----------------------------
     # one-hot encoding (sparse safe)
-    # ----------------------------
     if onehot_cols:
 
         enc = OneHotEncoder(

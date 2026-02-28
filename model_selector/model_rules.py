@@ -101,9 +101,7 @@ MODEL_REGISTRY = {
     "dbscan": dict(classification=False, regression=False, clustering=True, nonlinear=True),
 }
 
-# --------------------------------------------------
 # MODEL NAME NORMALIZATION
-# --------------------------------------------------
 
 MODEL_NAME_ALIASES = {
 
@@ -172,9 +170,7 @@ def normalize_llm_models(llm_models):
     return out
 
 
-# --------------------------------------------------
 # SCORING
-# --------------------------------------------------
 
 FUSION_WEIGHTS = {
     "data": 0.6,
@@ -227,9 +223,7 @@ def llm_score(model, normalized_llm_ranked):
     return 1 - (normalized_llm_ranked.index(model) / len(normalized_llm_ranked))
 
 
-# --------------------------------------------------
 # FINAL RANK
-# --------------------------------------------------
 
 def rank_models(problem_type, characteristics, llm_result):
 

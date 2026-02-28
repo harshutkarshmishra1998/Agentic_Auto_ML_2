@@ -18,9 +18,7 @@ def build_plan(dataset_path: str, column_profiles: list) -> PreprocessPlan:
         dataset_name=dataset_name
     )
 
-    # ---------------------------------
     # 1. drop identifiers
-    # ---------------------------------
     identifier_cols = [
         c["column_name"]
         for c in column_profiles
@@ -36,9 +34,7 @@ def build_plan(dataset_path: str, column_profiles: list) -> PreprocessPlan:
             reason="identifier columns"
         ))
 
-    # ---------------------------------
     # 2. missing value handling
-    # ---------------------------------
     numeric_missing = []
     categorical_missing = []
 
@@ -66,9 +62,7 @@ def build_plan(dataset_path: str, column_profiles: list) -> PreprocessPlan:
             reason="structural missing handling"
         ))
 
-    # ---------------------------------
     # 3. skew stabilization
-    # ---------------------------------
     log_candidates = [
         c["column_name"]
         for c in column_profiles
@@ -84,9 +78,7 @@ def build_plan(dataset_path: str, column_profiles: list) -> PreprocessPlan:
             reason="skew stabilization"
         ))
 
-    # ---------------------------------
     # 4. deferred operations
-    # ---------------------------------
     # plan.deferred_model_dependent.extend([
     #     "scaling",
     #     "encoding_strategy_selection",
@@ -95,9 +87,8 @@ def build_plan(dataset_path: str, column_profiles: list) -> PreprocessPlan:
     #     "representation_learning"
     # ])
 
-        # ---------------------------------
+
     # 4. column-level deferred operations
-    # ---------------------------------
     for c in column_profiles:
 
         col = c["column_name"]

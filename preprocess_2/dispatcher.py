@@ -53,25 +53,18 @@ def run_strategies(df, context):
 
     for strategy in PIPELINE_ORDER:
 
-        # -------------------------------
         # data_sanity has no column input
-        # -------------------------------
         if strategy == "data_sanity":
             df, log = STRATEGY_MAP[strategy](df)
 
-        # -------------------------------
         # correlation has no column input
-        # -------------------------------
         elif strategy == "correlation_resolution":
             df, log = STRATEGY_MAP[strategy](df)
 
-        # -------------------------------
         # column-based strategies
-        # -------------------------------
         else:
             planned_cols = context.get_columns(strategy)
 
-            # 🔥 CRITICAL FIX
             existing_cols = [
                 c for c in planned_cols
                 if c in df.columns

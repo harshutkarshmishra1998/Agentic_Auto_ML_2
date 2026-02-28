@@ -20,7 +20,7 @@ def extract_schema(metadata_path: str, data_path: str):
     if not data_path.exists(): #type: ignore
         raise FileNotFoundError(data_path)
 
-    # ---------- load metadata ----------
+    # load metadata
     with open(metadata_path, "r", encoding="utf-8") as f:
         meta = json.load(f)
 
@@ -30,7 +30,7 @@ def extract_schema(metadata_path: str, data_path: str):
     if categorical_flags is None:
         raise ValueError("metadata missing 'categorical_features'")
 
-    # ---------- load dataset ----------
+    # load dataset
     df = pd.read_csv(data_path)
 
     # remove columns that are fully empty
@@ -41,13 +41,13 @@ def extract_schema(metadata_path: str, data_path: str):
 
     dataset_columns = list(df.columns)
 
-    # ---------- build feature column list ----------
+    # build feature column list
     if target_column and target_column in dataset_columns:
         feature_columns = [c for c in dataset_columns if c != target_column]
     else:
         feature_columns = dataset_columns
 
-    # ---------- validate alignment ----------
+    # validate alignment
     if len(categorical_flags) != len(feature_columns):
         raise ValueError(
             "Metadata categorical flag count does not match feature columns.\n"
@@ -56,7 +56,7 @@ def extract_schema(metadata_path: str, data_path: str):
             f"target = {target_column}"
         )
 
-    # ---------- map ----------
+    # map
     categorical_columns = [
         col for col, is_cat in zip(feature_columns, categorical_flags) if is_cat
     ]

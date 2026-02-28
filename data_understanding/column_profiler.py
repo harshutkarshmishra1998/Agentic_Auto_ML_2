@@ -33,9 +33,7 @@ def is_constant(series):
     return series.nunique(dropna=True) <= 1
 
 
-# ----------------------------
 # missing pattern
-# ----------------------------
 def missing_pattern(series, df):
     """
     Detect whether missingness is correlated with other variables.
@@ -79,9 +77,7 @@ def missing_pattern(series, df):
     return "random"
 
 
-# ----------------------------
 # distribution
-# ----------------------------
 def distribution_shape(series):
     if not _is_non_boolean_numeric(series):
         return "N/A"
@@ -104,9 +100,7 @@ def outliers_present(series):
     return bool(((s < q1 - 1.5 * iqr) | (s > q3 + 1.5 * iqr)).sum() > 0)
 
 
-# ----------------------------
 # cardinality
-# ----------------------------
 def cardinality_level(unique_ratio):
     if unique_ratio > 0.9:
         return "very_high"
@@ -117,9 +111,7 @@ def cardinality_level(unique_ratio):
     return "low"
 
 
-# ----------------------------
 # encoding need
-# ----------------------------
 def encoding_required(semantic_type):
     return semantic_type in {
         "categorical_nominal",
@@ -128,9 +120,7 @@ def encoding_required(semantic_type):
     }
 
 
-# ----------------------------
 # text complexity
-# ----------------------------
 def text_complexity(series):
     if series.dtype != "object":
         return None
@@ -142,9 +132,7 @@ def text_complexity(series):
     return "short"
 
 
-# ----------------------------
 # category imbalance
-# ----------------------------
 def category_imbalance(series):
     if series.nunique() > 30:
         return None
@@ -153,18 +141,6 @@ def category_imbalance(series):
         return None
     return float(p.iloc[0])
 
-
-# ----------------------------
-# correlation strength
-# ----------------------------
-# def correlation_strength(col, df):
-#     if not pd.api.types.is_numeric_dtype(df[col]):
-#         return None
-#     num = df.select_dtypes(include=np.number)
-#     if num.shape[1] < 2:
-#         return None
-#     corr = num.corr()[col].drop(col).abs().max()
-#     return float(corr) if not pd.isna(corr) else None
 
 def correlation_strength(col, df):
     """
@@ -198,9 +174,7 @@ def correlation_strength(col, df):
     return float(max_corr)
 
 
-# ----------------------------
 # transform hint
-# ----------------------------
 def transform_hint(series):
     if not _is_non_boolean_numeric(series):
         return None
@@ -215,9 +189,7 @@ def transform_hint(series):
     return None
 
 
-# ----------------------------
 # modeling hint
-# ----------------------------
 def modeling_hint(semantic_type):
     if semantic_type.startswith("categorical"):
         return "encoding"

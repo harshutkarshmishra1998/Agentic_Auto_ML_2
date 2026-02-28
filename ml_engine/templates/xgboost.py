@@ -7,9 +7,9 @@ class XGBoostTemplate(ModelTemplate):
 
     def build(self):
         if self.config["task"] == "regression":
-            self.model = XGBRegressor(**self.config["init"])
+            self.model = XGBRegressor(**self.config["init"]) #type: ignore
         else:
-            self.model = XGBClassifier(**self.config["init"])
+            self.model = XGBClassifier(**self.config["init"]) #type: ignore
 
     def metric(self, y_true, y_pred):
         if self.config["task"] == "regression":

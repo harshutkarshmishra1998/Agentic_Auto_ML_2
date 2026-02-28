@@ -15,7 +15,7 @@ def preprocess_1_node(state: AgentState) -> Dict[str, Any]:
     # default = 1 if not provided upstream
     last_n = state.get("preprocess_last_n", 1)
 
-    results = run_preprocess_1(last_n)
+    results = run_preprocess_1(last_n) #type: ignore
 
     return {
         "preprocess_1_result": results

@@ -5,13 +5,6 @@ from evaluation_engine.pipeline import run_evaluation_pipeline
 
 
 def evaluation_node(state: AgentState) -> Dict[str, Any]:
-    """
-    LangGraph node wrapper for evaluation pipeline.
-
-    Uses evaluation_last_n (or falls back to ml_training_last_n/preprocess_last_n) as
-    evaluation batch size.
-    """
-
     last_n = (
         state.get("evaluation_last_n")
         or state.get("ml_training_last_n")

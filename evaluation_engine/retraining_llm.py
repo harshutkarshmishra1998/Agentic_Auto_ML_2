@@ -15,9 +15,7 @@ def analyze_retraining_need(context: dict) -> dict:
     strategy = (context.get("validation_strategy") or {}).get("type")
     val_gap = context.get("validation_gap")
 
-    # -----------------------------
     # Unsupervised tasks: no train/val gap expected
-    # -----------------------------
     if task in {"clustering", "unsupervised"}:
         return {
             "validation_gap": val_gap,
@@ -32,9 +30,7 @@ def analyze_retraining_need(context: dict) -> dict:
             )
         }
 
-    # -----------------------------
     # Case 1 — no validation info
-    # -----------------------------
     if val_gap is None:
         return {
             "validation_gap": val_gap,
@@ -47,9 +43,7 @@ def analyze_retraining_need(context: dict) -> dict:
             )
         }
 
-    # -----------------------------
     # Case 2 — overfitting detected
-    # -----------------------------
     if val_gap > 0.1:
         return {
             "validation_gap": val_gap,
@@ -59,9 +53,7 @@ def analyze_retraining_need(context: dict) -> dict:
             "llm_summary": "Model shows signs of overfitting."
         }
 
-    # -----------------------------
     # Case 3 — stable performance
-    # -----------------------------
     return {
         "validation_gap": val_gap,
         "should_retrain": False,

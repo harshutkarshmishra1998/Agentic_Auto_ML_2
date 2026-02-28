@@ -18,9 +18,7 @@ from patch.files_registry import list_pipeline_outputs
 from parser.pipeline import run_pipeline
 
 
-# --------------------------------------------------
 # BUILD GRAPH
-# --------------------------------------------------
 def build_graph():
 
     builder = StateGraph(AgentState)
@@ -74,9 +72,7 @@ def run_process(DATA_FILE, cats=[], target=None):
     return [result, llm_response, files_resgistry]
 
 
-# --------------------------------------------------
 # RUN
-# --------------------------------------------------
 if __name__ == "__main__":
 
     clear_project_data_dir()

@@ -3,9 +3,7 @@ from typing import List, Dict
 import fnmatch
 
 
-# =========================================================
 # PIPELINE ORDER
-# =========================================================
 
 FILES_IN_ORDER = [
     "user_input.jsonl",
@@ -33,9 +31,7 @@ FILES_IN_ORDER = [
 ]
 
 
-# =========================================================
 # SEARCH DIRECTORIES
-# =========================================================
 
 SEARCH_DIRS = [
     "data",
@@ -45,14 +41,12 @@ SEARCH_DIRS = [
 ]
 
 
-# =========================================================
 # ⭐ EXPLICIT DISPLAY NAME MAPPING (EDIT THIS)
 # pattern → display label
-# =========================================================
 
 DISPLAY_NAME_MAPPING = {
 
-    # ---------------- LOG FILES ----------------
+    # LOG FILES
     "user_input.jsonl": "USER_INPUT_LOGS",
     "data_classification.jsonl": "DATA_CLASSIFICATION_LOGS",
     "column_inspection.jsonl": "COLUMN_INSPECTION_LOGS",
@@ -63,7 +57,7 @@ DISPLAY_NAME_MAPPING = {
     "ml_experiments.jsonl": "ML_EXPERIMENTS_LOGS",
     "evaluation.jsonl": "EVALUATION_LOGS",
 
-    # ---------------- XLSX REPORT FILES ----------------
+    # XLSX REPORT FILES
     "user_input.xlsx": "USER_INPUT_REPORT",
     "data_classification.xlsx": "DATA_CLASSIFICATION_REPORT",
     "column_inspection.xlsx": "COLUMN_INSPECTION_REPORT",
@@ -74,15 +68,13 @@ DISPLAY_NAME_MAPPING = {
     "ml_experiments.xlsx": "ML_EXPERIMENTS_REPORT",
     "evaluation.xlsx": "EVALUATION_REPORT",
 
-    # ---------------- FINAL OUTPUTS ----------------
+    # FINAL OUTPUTS
     "*preprocessed*final.csv": "FINAL PREPROCESSED DATASET",
     "*.joblib": "TRAINED MODEL",
 }
 
 
-# =========================================================
 # DISPLAY NAME RESOLUTION
-# =========================================================
 
 def _resolve_display_name(file_name: str) -> str:
     for pattern, label in DISPLAY_NAME_MAPPING.items():
@@ -93,9 +85,7 @@ def _resolve_display_name(file_name: str) -> str:
     return Path(file_name).stem.upper()
 
 
-# =========================================================
 # FILE SEARCH
-# =========================================================
 
 def _find_matching_files(root: Path, pattern: str) -> List[Path]:
     matches = []
@@ -112,9 +102,7 @@ def _find_matching_files(root: Path, pattern: str) -> List[Path]:
     return matches
 
 
-# =========================================================
 # MAIN REGISTRY
-# =========================================================
 
 def list_pipeline_outputs() -> List[Dict]:
     root = Path(__file__).resolve().parents[1]

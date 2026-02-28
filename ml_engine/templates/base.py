@@ -85,7 +85,7 @@
 
 #         return {
 #             "model": self.model,
-#             "result": validation_result,      # ⭐ THIS KEY MUST EXIST
+#             "result": validation_result,
 #             "validation_strategy": strategy
 #         }
 

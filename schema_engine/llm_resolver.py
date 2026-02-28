@@ -18,16 +18,12 @@ VALID_ROLES = {
 }
 
 
-# -----------------------------
 # Groq client
-# -----------------------------
 def _get_client():
     return Groq()
 
 
-# -----------------------------
 # Prompt builder
-# -----------------------------
 def _build_prompt(column_name, profile, current_role):
 
     return f"""
@@ -78,9 +74,7 @@ FORMAT:
 """
 
 
-# -----------------------------
 # Response parser
-# -----------------------------
 def _parse_response(text: str):
 
     text = text.strip()
@@ -104,9 +98,7 @@ def _parse_response(text: str):
     return role, confidence
 
 
-# -----------------------------
 # PUBLIC FUNCTION
-# -----------------------------
 def resolve_with_llm(column_name, profile, current_role) -> Tuple[str, float]:
     """
     Uses Groq LLM to resolve ambiguous column role.

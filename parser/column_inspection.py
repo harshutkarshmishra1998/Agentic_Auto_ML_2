@@ -5,9 +5,7 @@ from openpyxl import Workbook
 from parser.excel_writer import _auto_adjust_column_width
 
 
-# --------------------------------------------------
 # helpers
-# --------------------------------------------------
 def _fmt(v):
     if v is None:
         return ""
@@ -41,9 +39,7 @@ def _write_dependency_graph(ws, graph: dict):
     _auto_adjust_column_width(ws)
 
 
-# --------------------------------------------------
 # main exporter
-# --------------------------------------------------
 def column_inspection(last_n: int | None = None):
     PROJECT_ROOT = Path(__file__).resolve().parents[1]
     JSONL_PATH = PROJECT_ROOT / "data"
@@ -133,8 +129,6 @@ def column_inspection(last_n: int | None = None):
     # print(f"Excel bundle exported → {output}")
 
 
-# --------------------------------------------------
 # run
-# --------------------------------------------------
 if __name__ == "__main__":
     column_inspection()

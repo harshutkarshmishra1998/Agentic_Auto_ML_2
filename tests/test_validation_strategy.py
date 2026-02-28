@@ -20,7 +20,7 @@ def test_prepare_features_encodes_string_datetime_columns():
     prepared = _prepare_features(X)
 
     assert prepared.shape[1] >= 2
-    assert all(dtype.kind in {"i", "u", "f", "b"} for dtype in prepared.dtypes)
+    assert all(dtype.kind in {"i", "u", "f", "b"} for dtype in prepared.dtypes) #type: ignore
 
 
 def test_run_validation_with_datetime_strings_does_not_crash():
@@ -51,7 +51,7 @@ def test_run_validation_with_datetime_strings_does_not_crash():
 
     assert "cv_mean" in result
     assert "fold_scores" in result
-    assert len(result["fold_scores"]) == 3
+    assert len(result["fold_scores"]) == 3 #type: ignore
 
 
 def test_prepare_features_high_cardinality_column_is_not_one_hot_exploded():

@@ -120,7 +120,7 @@ def _append_adjusted_initialization(
 ) -> Dict[str, Any]:
     adjusted = dict(init_record)
     adjusted["init_params"] = _adjust_init_params(
-        model_name=adjusted.get("model"),
+        model_name=adjusted.get("model"), #type: ignore
         init_params=adjusted.get("init_params", {}),
         retraining_analysis=retraining_analysis,
         round_idx=round_idx,
@@ -155,7 +155,7 @@ def run_retraining_loop(max_rounds: int = 5) -> Dict[str, Any]:
 
         experiment_id = latest.get("experiment_id")
         dataset_path = latest.get("dataset", {}).get("path")
-        best_model = _resolve_best_model(experiment_id)
+        best_model = _resolve_best_model(experiment_id) #type: ignore
 
         if not experiment_id or not dataset_path or not best_model:
             break

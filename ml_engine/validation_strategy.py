@@ -100,9 +100,7 @@ def _prepare_features(X):
 def run_validation(model, X, y, strategy, metric_fn, task):
     X = _prepare_features(X)
 
-    # -----------------------------
     # clustering
-    # -----------------------------
     if strategy["type"] == "fit_all":
         X_numeric = X.select_dtypes(include=["number"])
 
@@ -124,9 +122,7 @@ def run_validation(model, X, y, strategy, metric_fn, task):
             "n_numeric_features_used": int(X_numeric.shape[1])
         }
 
-    # -----------------------------
     # holdout
-    # -----------------------------
     if strategy["type"] == "holdout":
         Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2, random_state=42)
 
@@ -151,9 +147,7 @@ def run_validation(model, X, y, strategy, metric_fn, task):
                 "rmse": float(np.sqrt(mean_squared_error(yte, val_pred)))
             }
 
-    # -----------------------------
     # cross validation
-    # -----------------------------
     if strategy["type"] == "loo":
         splitter = LeaveOneOut()
     elif strategy["type"] == "kfold":

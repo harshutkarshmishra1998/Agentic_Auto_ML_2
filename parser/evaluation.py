@@ -8,9 +8,7 @@ INPUT = Path("data/evaluation.jsonl")
 OUTPUT = Path("parser/data/xlsx/evaluation.xlsx")
 
 
-# -----------------------------------------------------
 # universal flatten (same as ml_experiments)
-# -----------------------------------------------------
 def flatten_dict(obj, parent_key="", sep="_"):
     items = {}
 
@@ -55,16 +53,12 @@ def remove_empty_columns(ws):
         ws.delete_cols(col)
 
 
-# -----------------------------------------------------
 # loader
-# -----------------------------------------------------
 def load(path):
     return [json.loads(l) for l in path.read_text().splitlines() if l.strip()]
 
 
-# -----------------------------------------------------
 # schema adaptive writer (same as ml_experiments)
-# -----------------------------------------------------
 def write_record(ws, flat):
 
     # ---------- first record ----------
@@ -93,9 +87,7 @@ def write_record(ws, flat):
     ws.append(row)
 
 
-# -----------------------------------------------------
 # main
-# -----------------------------------------------------
 def evaluation():
 
     records = load(INPUT)

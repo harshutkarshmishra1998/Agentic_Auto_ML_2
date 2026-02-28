@@ -90,9 +90,7 @@
 #     print(f"CSV written → {out}")
 
 
-# # ---------------------------------------------------
 # # run
-# # ---------------------------------------------------
 # if __name__ == "__main__":
 
 #     JSONL_FILE = "data/column_inspection.jsonl"
@@ -108,9 +106,7 @@ from pathlib import Path
 from openpyxl import Workbook
 
 
-# --------------------------------------------------
 # helpers
-# --------------------------------------------------
 def _fmt(v):
     if v is None:
         return ""
@@ -141,9 +137,7 @@ def _write_dependency_graph(ws, graph: dict):
                 ws.append([k, d])
 
 
-# --------------------------------------------------
 # main exporter
-# --------------------------------------------------
 def export_full_inspection_bundle(jsonl_path: str, n: int, output_xlsx: str):
     path = Path(jsonl_path)
     if not path.exists():
@@ -167,46 +161,46 @@ def export_full_inspection_bundle(jsonl_path: str, n: int, output_xlsx: str):
 
         prefix = f"rec_{record_idx}_"
 
-        # ---------------- metadata ----------------
+        # metadata
         ws = wb.create_sheet(prefix + "metadata")
         ws.append(["dataset_file_name", dataset_name])
         ws.append(["dataset_file_path", dataset_path])
 
-        # ---------------- column_profiles ----------------
+        # column_profiles
         column_profiles = obj.get("column_profiles", [])
         if column_profiles:
             headers = list(column_profiles[0].keys())
             ws = wb.create_sheet(prefix + "column_profiles")
             _write_table(ws, column_profiles, headers)
 
-        # ---------------- correlation_pairs ----------------
+        # correlation_pairs
         corr = obj.get("correlation_pairs", [])
         if corr:
             headers = list(corr[0].keys())
             ws = wb.create_sheet(prefix + "correlation_pairs")
             _write_table(ws, corr, headers)
 
-        # ---------------- redundant_features ----------------
+        # redundant_features
         redundant = obj.get("redundant_features", [])
         if redundant:
             headers = list(redundant[0].keys())
             ws = wb.create_sheet(prefix + "redundant_features")
             _write_table(ws, redundant, headers)
 
-        # ---------------- derived_relationships ----------------
+        # derived_relationships
         derived = obj.get("derived_relationships", [])
         if derived:
             headers = list(derived[0].keys())
             ws = wb.create_sheet(prefix + "derived_relationships")
             _write_table(ws, derived, headers)
 
-        # ---------------- dependency_graph ----------------
+        # dependency_graph
         dep_graph = obj.get("dependency_graph", {})
         if dep_graph:
             ws = wb.create_sheet(prefix + "dependency_graph")
             _write_dependency_graph(ws, dep_graph)
 
-        # ---------------- drop_recommendations ----------------
+        # drop_recommendations
         drops = obj.get("drop_recommendations", [])
         if drops:
             ws = wb.create_sheet(prefix + "drop_recommendations")
@@ -219,9 +213,7 @@ def export_full_inspection_bundle(jsonl_path: str, n: int, output_xlsx: str):
     print(f"Excel bundle exported → {output}")
 
 
-# --------------------------------------------------
 # run
-# --------------------------------------------------
 if __name__ == "__main__":
 
     JSONL_FILE = "data/column_inspection.jsonl"

@@ -72,9 +72,7 @@ cats, target = extract_schema(METADATA_FILE, DATA_FILE)
 #     print("TARGET_COLUMN = null")
 
 
-# --------------------------------------------------
 # BUILD GRAPH
-# --------------------------------------------------
 def build_graph():
 
     builder = StateGraph(AgentState)
@@ -104,9 +102,7 @@ def build_graph():
     return builder.compile()
 
 
-# --------------------------------------------------
 # RUN
-# --------------------------------------------------
 if __name__ == "__main__":
 
     graph = build_graph()

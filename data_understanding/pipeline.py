@@ -17,9 +17,7 @@ def run_data_understanding(dataset_path):
 
     column_records = []
 
-    # --------------------------------
     # FEATURE RELATIONSHIPS
-    # --------------------------------
     corr_pairs = correlation_pairs(df, min_abs_corr=0.0)
     redundant = redundant_features(df)
     derived = derived_linear_relationships(df)

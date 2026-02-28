@@ -136,9 +136,7 @@ from .llm_reasoner import llm_model_selection
 from .utils import file_sha256, now_iso, new_experiment_id, SELECTOR_VERSION
 
 
-# =====================================================
 # PROBLEM ONTOLOGY (EMBEDDED — NO EXTRA FILE)
-# =====================================================
 
 CANONICAL_PROBLEM_TYPES = {
     "classification",
@@ -229,9 +227,7 @@ def get_problem_metadata(problem_type: str):
     }
 
 
-# =====================================================
 # LLM SUMMARY BUILDER
-# =====================================================
 
 def build_llm_summary(dataset):
 
@@ -248,9 +244,7 @@ def build_llm_summary(dataset):
     }
 
 
-# =====================================================
 # ARBITRATION
-# =====================================================
 
 def resolve_problem(rule_type, rule_conf, llm_type, llm_conf, semi_flag):
 
@@ -266,9 +260,7 @@ def resolve_problem(rule_type, rule_conf, llm_type, llm_conf, semi_flag):
     return rule_type
 
 
-# =====================================================
 # PREPROCESS RECONCILIATION
-# =====================================================
 
 def reconcile_preprocessing(llm_result, preprocessing):
 
@@ -286,49 +278,47 @@ def reconcile_preprocessing(llm_result, preprocessing):
     }
 
 
-# =====================================================
 # MAIN MODEL PLAN BUILDER
-# =====================================================
 
 def build_model_plan(dataset):
 
     experiment_id = new_experiment_id()
     char = compute_characteristics(dataset)
 
-    # ---------------- rule inference ----------------
+    # rule inference
     rule_type, rule_conf = detect_problem_type(
         dataset["target_column"],
         dataset["column_profiles"]
     )
 
-    # ---------------- semi supervised ----------------
+    # semi supervised
     semi_flag, _ = detect_semi_supervised(dataset)
 
-    # ---------------- llm inference ----------------
+    # llm inference
     llm_result = llm_model_selection(build_llm_summary(dataset))
     llm_type = llm_result.get("problem_type", "unknown")
     llm_conf = llm_result.get("problem_confidence", 0.5)
 
-    # ---------------- arbitration ----------------
+    # arbitration
     final_problem_raw = resolve_problem(
         rule_type, rule_conf,
         llm_type, llm_conf,
         semi_flag
     )
 
-    # ---------------- ONTOLOGY NORMALIZATION ----------------
+    # ONTOLOGY NORMALIZATION
     final_problem = canonical_problem_type(final_problem_raw)
 
-    # ---------------- VALIDATION ----------------
+    # VALIDATION
     configuration_status = validate_problem_configuration(
         final_problem,
         dataset["target_column"]
     )
 
-    # ---------------- METADATA ----------------
+    # METADATA
     problem_meta = get_problem_metadata(final_problem)
 
-    # ---------------- MODEL RANKING ----------------
+    # MODEL RANKING
     ranking = rank_models(final_problem, char, llm_result)
 
     primary_model = ranking[0]["model"] if ranking else None
@@ -339,9 +329,9 @@ def build_model_plan(dataset):
         dataset["preprocessing"]
     )
 
-    # =====================================================
+
     # FINAL EXPERIMENT MANIFEST
-    # =====================================================
+
 
     return {
 

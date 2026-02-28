@@ -9,9 +9,7 @@ from run_agent import run_process
 from patch.clear_data_folder import clear_project_data_dir
 
 
-# ---------------------------------------------------
 # CONFIG
-# ---------------------------------------------------
 UPLOAD_DIR = Path("uploaded_files/user_uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -22,9 +20,7 @@ st.set_page_config(
 )
 
 
-# ---------------------------------------------------
 # SESSION INITIALIZATION (RUN ONLY ONCE PER SESSION)
-# ---------------------------------------------------
 if "initialized" not in st.session_state:
     clear_project_data_dir()
     st.session_state.initialized = True
@@ -42,9 +38,7 @@ if "saved_path" not in st.session_state:
     st.session_state.saved_path = None
 
 
-# ---------------------------------------------------
 # UI STYLING
-# ---------------------------------------------------
 st.markdown("""
 <style>
 .main-title {
@@ -59,9 +53,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ---------------------------------------------------
 # HELPERS
-# ---------------------------------------------------
 def save_uploaded_file(uploaded_file):
     ext = uploaded_file.name.split(".")[-1]
     unique_name = f"{uuid.uuid4().hex}.{ext}"
@@ -113,17 +105,13 @@ def collect_parser_csv(files_registry):
     return result
 
 
-# ---------------------------------------------------
 # HEADER
-# ---------------------------------------------------
 st.markdown('<div class="main-title">🚀 Agentic Auto ML</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Upload → Analyze → Train → Evaluate → Download</div>', unsafe_allow_html=True)
 st.divider()
 
 
-# ---------------------------------------------------
 # INPUT SECTION
-# ---------------------------------------------------
 col1, col2 = st.columns([2, 1])
 
 with col1:
@@ -148,9 +136,7 @@ with col2:
 st.divider()
 
 
-# ---------------------------------------------------
 # RUN PIPELINE BUTTON
-# ---------------------------------------------------
 if st.button("🚀 Run Auto ML", use_container_width=True):
 
     if uploaded_file is None:
@@ -191,9 +177,7 @@ if st.button("🚀 Run Auto ML", use_container_width=True):
     st.session_state.pipeline_ran = True
 
 
-# ---------------------------------------------------
 # SHOW RESULTS (PERSISTENT)
-# ---------------------------------------------------
 if st.session_state.pipeline_ran:
 
     st.divider()
@@ -205,7 +189,7 @@ if st.session_state.pipeline_ran:
 
     # files_registry = st.session_state.files_registry
 
-    # # ---- FILTER FILES ----
+    # # FILTER FILES
     # csv_files = collect_parser_csv(files_registry) if files_registry else []
 
     # xlsx_files = [
@@ -221,7 +205,7 @@ if st.session_state.pipeline_ran:
     # colA, colB, colC = st.columns(3)
 
 
-    # # ================= CSV =================
+    # # CSV
     # with colA:
     #     st.markdown("### CSV Files")
 
@@ -243,7 +227,7 @@ if st.session_state.pipeline_ran:
     #         if os.path.exists(path):
     #             with open(path, "rb") as file_data:
     #                 st.download_button(
-    #                     label=fobj["display_name"],   # ✅ display name
+    #                     label=fobj["display_name"],
     #                     data=file_data,
     #                     file_name=fobj["file_name"],
     #                     key=f"csv_{hash(path)}",
@@ -251,7 +235,7 @@ if st.session_state.pipeline_ran:
     #                 )
 
 
-    # # ================= XLSX =================
+    # # XLSX
     # with colB:
     #     st.markdown("### XLSX Reports")
 
@@ -270,7 +254,7 @@ if st.session_state.pipeline_ran:
     #                 )
 
 
-    # # ================= JSONL =================
+    # # JSONL
     # with colC:
     #     st.markdown("### JSONL Logs")
 
@@ -289,7 +273,7 @@ if st.session_state.pipeline_ran:
 
     files_registry = st.session_state.files_registry
 
-    # --------- Categorize Files ---------
+    # Categorize Files
     parser_csv = None
     joblib_file = None
     jsonl_files = []
@@ -320,11 +304,11 @@ if st.session_state.pipeline_ran:
     col1, col2 = st.columns(2)
 
 
-    # ================= COLUMN 1 =================
+    # COLUMN 1
     with col1:
         st.markdown("### Core Artifacts")
 
-        # ---- Preprocessed CSV ----
+        # Preprocessed CSV
         if parser_csv:
             path = parser_csv["file_path"]
             if os.path.exists(path):
@@ -337,7 +321,7 @@ if st.session_state.pipeline_ran:
                         use_container_width=True
                     )
 
-        # ---- Trained Model ----
+        # Trained Model
         if joblib_file:
             path = joblib_file["file_path"]
             if os.path.exists(path):
@@ -350,7 +334,7 @@ if st.session_state.pipeline_ran:
                         use_container_width=True
                     )
 
-        # ---- JSONL Logs ZIP ----
+        # JSONL Logs ZIP
         if jsonl_files:
             zip_path = create_zip(jsonl_files)
 
@@ -364,7 +348,7 @@ if st.session_state.pipeline_ran:
                 )
 
 
-    # ================= COLUMN 2 =================
+    # COLUMN 2
     with col2:
         st.markdown("### Excel Reports")
 

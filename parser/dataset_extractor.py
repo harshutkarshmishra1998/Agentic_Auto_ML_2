@@ -4,9 +4,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-# -----------------------------
 # CONFIG
-# -----------------------------
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 PARSER_DATA_DIR = PROJECT_ROOT / "parser" / "data"
@@ -15,9 +13,7 @@ JOBLIB_FILE=PARSER_DATA_DIR/"joblib"
 JSONL_FILE = DATA_DIR / "ml_experiments.jsonl"
 
 
-# -----------------------------
 # HELPERS
-# -----------------------------
 def parse_timestamp(ts: str):
     """
     Safely parse timestamp.
@@ -82,9 +78,7 @@ def copy_joblib_from_dir(directory: Path, dest_dir: Path):
         print(f"✔ Copied joblib: {file.name}")
 
 
-# -----------------------------
 # MAIN
-# -----------------------------
 def dataset_extractor():
     if not JSONL_FILE.exists():
         raise FileNotFoundError(f"JSONL not found: {JSONL_FILE}")

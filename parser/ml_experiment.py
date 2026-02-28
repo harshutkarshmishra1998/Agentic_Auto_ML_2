@@ -82,7 +82,7 @@ def ml_experiment():
         if after > before:
             sheet_count += 1
 
-    # ---------- ensure at least one sheet ----------
+    # ensure at least one sheet
     if sheet_count == 0:
         ws = wb.create_sheet("no_data")
         ws.append(["message"])

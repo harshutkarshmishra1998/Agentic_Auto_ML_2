@@ -26,9 +26,7 @@ def apply(df, columns):
     coerced_cols = []
     skipped_cols = []
 
-    # ---------------------------------
     # validate numeric compatibility
-    # ---------------------------------
     for col in columns:
 
         if col not in df.columns:
@@ -52,9 +50,7 @@ def apply(df, columns):
         else:
             skipped_cols.append(col)
 
-    # ---------------------------------
     # nothing numeric → skip
-    # ---------------------------------
     if not numeric_cols:
         return df, {
             "strategy": "scaling",
@@ -62,9 +58,7 @@ def apply(df, columns):
             "reason": "no_numeric_columns"
         }
 
-    # ---------------------------------
     # apply scaling
-    # ---------------------------------
     scaler = StandardScaler()
     df[numeric_cols] = scaler.fit_transform(df[numeric_cols])
 

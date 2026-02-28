@@ -6,9 +6,7 @@ from pathlib import Path
 import pandas as pd
 
 
-# --------------------------------------------------
 # helpers
-# --------------------------------------------------
 
 def _get_project_root():
     return Path(__file__).resolve().parents[1]
@@ -102,9 +100,7 @@ def _write_jsonl(path, record):
         f.write("\n")
 
 
-# --------------------------------------------------
 # public logger
-# --------------------------------------------------
 
 def log_experiment(
     *,

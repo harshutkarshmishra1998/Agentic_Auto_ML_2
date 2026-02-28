@@ -65,9 +65,7 @@ def repair_jsonl_file(input_path: str, output_path: str):
     print(f"Recovered objects → {len(objects)}")
 
 
-# --------------------------------------------------
 # run standalone
-# --------------------------------------------------
 if __name__ == "__main__":
 
     INPUT = "data/column_inspection.jsonl"

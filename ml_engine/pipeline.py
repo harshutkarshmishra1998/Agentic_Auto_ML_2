@@ -130,27 +130,21 @@ def run_training(last_n=1):
             "task": task
         })
 
-        # -----------------------------
         # measure training time
-        # -----------------------------
         start = time.perf_counter()
         output = template.run(X, y)
         training_time = time.perf_counter() - start
 
         model = output["model"]
 
-        # -----------------------------
         # save artifact
-        # -----------------------------
         artifact_path = save_model_artifact(
             model=model,
             dataset_path=dataset_path,
             experiment_id=experiment_id
         )
 
-        # -----------------------------
         # log experiment
-        # -----------------------------
         log_experiment(
             experiment_id=experiment_id,
             model_name=model_name,

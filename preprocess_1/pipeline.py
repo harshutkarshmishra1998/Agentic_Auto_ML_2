@@ -17,9 +17,7 @@ def _unique_suffix():
     return uuid.uuid4().hex[:8]
 
 
-# -------------------------------------------------
 # main exposed function
-# -------------------------------------------------
 def run_preprocess_1(last_n: int):
     """
     Runs model-independent preprocessing for last n inspection entries.
@@ -45,28 +43,20 @@ def run_preprocess_1(last_n: int):
         dataset_path = rec["dataset_file_path"]
         column_profiles = rec["column_profiles"]
 
-        # -----------------------------
         # PLAN
-        # -----------------------------
         plan = build_plan(dataset_path, column_profiles)
 
-        # -----------------------------
         # EXECUTE
-        # -----------------------------
         df, plan = execute_plan(plan)
 
         dataset_name = Path(dataset_path).stem
         uid = _unique_suffix()
 
-        # -----------------------------
         # SAVE (unique version)
-        # -----------------------------
         output_csv = DATA_DIR / f"{dataset_name}_preprocessed_1_{uid}.csv"
         df.to_csv(output_csv, index=False)
 
-        # -----------------------------
         # LOG (includes output file info)
-        # -----------------------------
         append_log(plan, output_csv, OUTPUT_LOG_PATH)
 
         results.append({

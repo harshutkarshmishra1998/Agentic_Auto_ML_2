@@ -10,21 +10,17 @@ INPUT = Path("data/preprocess_2.jsonl")
 OUTPUT = Path("parser/data/xlsx/preprocess_2.xlsx")
 
 
-# -----------------------------
 # load jsonl
-# -----------------------------
 def load_jsonl(path):
     return [json.loads(l) for l in path.read_text().splitlines() if l.strip()]
 
 
-# -----------------------------
 # parse record
-# -----------------------------
 def parse_record(wb, rec, idx):
 
     prefix = f"record_{idx}_"
 
-    # ---------- metadata ----------
+    # metadata
     meta = {
         k: v
         for k, v in rec.items()
@@ -33,7 +29,7 @@ def parse_record(wb, rec, idx):
     if meta:
         sheet_key_value(wb, prefix + "metadata", meta)
 
-    # ---------- strategy logs ----------
+    # strategy logs
     # logs = rec.get("strategy_logs")
     # if isinstance(logs, list) and logs:
 
@@ -89,9 +85,7 @@ def parse_record(wb, rec, idx):
             rows,
         )
 
-# -----------------------------
 # main
-# -----------------------------
 def preprocess_2():
 
     records = load_jsonl(INPUT)

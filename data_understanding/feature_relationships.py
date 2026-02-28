@@ -3,17 +3,13 @@ import numpy as np
 from itertools import combinations
 
 
-# --------------------------------------------------
 # SAFE NUMERIC MATRIX
-# --------------------------------------------------
 def numeric_nonconstant(df):
     num = df.select_dtypes(include="number")
     return num.loc[:, num.nunique(dropna=True) > 1]
 
 
-# --------------------------------------------------
 # CORRELATION PAIRS (store column names)
-# --------------------------------------------------
 def correlation_pairs(df, min_abs_corr=0.0):
     """
     Returns list of pairwise correlations.
@@ -45,9 +41,7 @@ def correlation_pairs(df, min_abs_corr=0.0):
     return pairs
 
 
-# --------------------------------------------------
 # STRONG REDUNDANCY DETECTOR
-# --------------------------------------------------
 def redundant_features(df, threshold=0.95):
     """
     Features that are almost duplicates (|corr| >= threshold)
@@ -68,9 +62,7 @@ def redundant_features(df, threshold=0.95):
     return redundant
 
 
-# --------------------------------------------------
 # DERIVED LINEAR FORMULA DETECTOR
-# --------------------------------------------------
 def derived_linear_relationships(df, threshold=0.999):
     """
     Detect deterministic linear relationships.
@@ -101,9 +93,7 @@ def derived_linear_relationships(df, threshold=0.999):
     return derived
 
 
-# --------------------------------------------------
 # FEATURE DEPENDENCY GRAPH
-# --------------------------------------------------
 def feature_dependency_graph(df, threshold=0.7):
     """
     Graph representation of feature relationships.
@@ -124,9 +114,7 @@ def feature_dependency_graph(df, threshold=0.7):
     return graph
 
 
-# --------------------------------------------------
 # AUTO FEATURE PRUNING PLANNER
-# --------------------------------------------------
 def pruning_plan(df, redundancy_threshold=0.95):
     """
     Recommend which features to drop.

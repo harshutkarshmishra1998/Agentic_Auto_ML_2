@@ -58,9 +58,7 @@ def print_last_n_role_constants(jsonl_path: str, n: int):
             print("TARGET_COLUMN = None")
 
 
-# --------------------------------------------------
 # Example usage
-# --------------------------------------------------
 if __name__ == "__main__":
     print_last_n_role_constants(
         "data/data_classification.jsonl",

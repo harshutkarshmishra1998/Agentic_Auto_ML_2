@@ -9,9 +9,7 @@ JSONL_FILENAME = "data/preprocesses_1.jsonl"
 OUTPUT_FILENAME = "parser/data/xlsx/preprocesses_1.xlsx"
 
 
-# -----------------------------------------------------
 # helpers
-# -----------------------------------------------------
 def _project_root():
     return Path(__file__).resolve().parents[1]
 
@@ -84,9 +82,7 @@ def _write_simple_list(wb, sheet_name, values):
         ws.append([_fmt(v)])
 
 
-# -----------------------------------------------------
 # robust JSON loader
-# -----------------------------------------------------
 def _load_jsonl(path: Path):
     text = path.read_text(encoding="utf-8")
 
@@ -121,9 +117,7 @@ def _load_jsonl(path: Path):
     return objs
 
 
-# -----------------------------------------------------
 # exporter
-# -----------------------------------------------------
 def preprocess_1(n: int | None = None):
 
     root = _project_root()
@@ -141,7 +135,7 @@ def preprocess_1(n: int | None = None):
         print("No records found")
         return
 
-    # -------- last N selection --------
+    #  last N selection 
     if n is not None:
         records = records[-n:]
 
@@ -181,8 +175,6 @@ def preprocess_1(n: int | None = None):
     # print(f"Records exported → {len(records)}")
 
 
-# -----------------------------------------------------
 # entry
-# -----------------------------------------------------
 if __name__ == "__main__":
     preprocess_1()

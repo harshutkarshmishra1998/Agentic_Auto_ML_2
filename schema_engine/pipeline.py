@@ -8,9 +8,7 @@ from .llm_resolver import resolve_with_llm
 from .exporter import export_schema_result, export_user_inputs
 
 
-# --------------------------------------------------
 # VALIDATE USER INPUT
-# --------------------------------------------------
 def _validate_user_inputs(df, categorical_columns, target_column):
 
     dataset_columns = set(df.columns)
@@ -28,9 +26,7 @@ def _validate_user_inputs(df, categorical_columns, target_column):
         )
 
 
-# --------------------------------------------------
 # MAIN PIPELINE
-# --------------------------------------------------
 def run_schema_inference(
     data_path,
     categorical_columns=None,
@@ -55,9 +51,7 @@ def run_schema_inference(
 
     for col, prof in profiles.items():
 
-        # ----------------------------
         # USER TARGET
-        # ----------------------------
         if col == target_column:
             results[col] = {
                 "role": Role.TARGET,
@@ -66,9 +60,7 @@ def run_schema_inference(
             }
             continue
 
-        # ----------------------------
         # USER CATEGORICAL
-        # ----------------------------
         if col in categorical_columns:
             results[col] = {
                 "role": Role.CATEGORICAL_NOMINAL,
@@ -77,9 +69,7 @@ def run_schema_inference(
             }
             continue
 
-        # ----------------------------
         # AUTO INFERENCE
-        # ----------------------------
         det_role, det_conf = deterministic_role(prof)
 
         llm_role = llm_conf = None
@@ -105,10 +95,7 @@ def run_schema_inference(
         "target": target_column,
         "columns": results,
     }
-
-    # ----------------------------
-    # EXPORT (APPEND MODE)
-    # ----------------------------
+    # EXPORT (APPEND MODE
     export_schema_result(data_path, final_output)
 
     export_user_inputs(data_path, categorical_columns, target_column)
