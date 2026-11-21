@@ -1,3 +1,6 @@
+# Hardcoded uploaded_files/churn/data.csv
+# Clears project data, copies the dataset, generates XLSX reports, summarizes files through an LLM
+
 from langgraph.graph import StateGraph, END
 from agent_state import AgentState
 

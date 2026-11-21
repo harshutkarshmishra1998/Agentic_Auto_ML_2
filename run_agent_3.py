@@ -1,3 +1,7 @@
+# Interactive menu: choose one dataset or range, such as 1-5
+# Runs multiple datasets sequentially
+# Handles failures individually, prints progress, and stops on the first failed dataset
+
 from langgraph.graph import StateGraph, END
 
 from agent_state import AgentState

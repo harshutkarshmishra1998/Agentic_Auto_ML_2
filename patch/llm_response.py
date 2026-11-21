@@ -16,7 +16,7 @@ FILES_IN_ORDER = [
     "ml_experiments.jsonl",
     "evaluation.jsonl", 
 ]
-MODEL_NAME = "llama-3.3-70b-versatile"
+MODEL_NAME = api_keys._loaded["LLM"]
 
 
 # helpers

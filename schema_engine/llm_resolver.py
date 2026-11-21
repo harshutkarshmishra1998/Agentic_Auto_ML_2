@@ -113,7 +113,7 @@ def resolve_with_llm(column_name, profile, current_role) -> Tuple[str, float]:
         prompt = _build_prompt(column_name, profile, current_role)
 
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",   # fast + strong reasoning
+            model=api_keys._loaded["LLM"],
             temperature=0,
             messages=[
                 {"role": "system", "content": "Return strict JSON only."},

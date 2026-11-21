@@ -2,7 +2,7 @@ from groq import Groq
 import json
 import api_keys
 
-MODEL = "llama-3.3-70b-versatile"
+MODEL = api_keys._loaded["LLM"]
 
 
 def _client():

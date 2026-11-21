@@ -24,3 +24,9 @@
 - `logger.log_experiment(...)`: unified task-aware metrics schema + lineage.
 - `artifacts.save_model_artifact(...)`: structured model persistence.
 - Template classes in `ml_engine/templates/*` (RandomForest, XGBoost, LightGBM, Logistic, Linear, KMeans, DBSCAN).
+
+## macOS XGBoost requirement
+The XGBoost library requires the OpenMP runtime on macOS. Install it with
+`brew install libomp` before running an experiment that selects XGBoost.
+XGBoost is imported only when its template is built, so other model runs do
+not require this system library.

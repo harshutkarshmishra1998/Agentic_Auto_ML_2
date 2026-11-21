@@ -1,3 +1,6 @@
+# Interactive menu: choose one dataset
+# Prints the complete final state
+
 from langgraph.graph import StateGraph, END
 
 from agent_state import AgentState

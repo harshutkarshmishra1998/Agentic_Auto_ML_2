@@ -1,4 +1,3 @@
-from xgboost import XGBClassifier, XGBRegressor
 from sklearn.metrics import accuracy_score, r2_score
 from .base import ModelTemplate
 
@@ -6,6 +5,8 @@ from .base import ModelTemplate
 class XGBoostTemplate(ModelTemplate):
 
     def build(self):
+        from xgboost import XGBClassifier, XGBRegressor
+
         if self.config["task"] == "regression":
             self.model = XGBRegressor(**self.config["init"]) #type: ignore
         else:
